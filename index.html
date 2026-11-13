@@ -37,7 +37,26 @@ h1 span{color:var(--red2)}
 .status i{display:inline-block;width:.7em;height:.7em;border-radius:50%;background:#555;margin-right:6px;vertical-align:middle}
 .status.on i{background:var(--ok);box-shadow:0 0 10px var(--ok)}
 .status.crank i{background:var(--gold)}
-.controls{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;gap:clamp(8px,.8vw,14px);flex:.62;min-height:0}
+.controls{display:flex;gap:clamp(10px,1vw,18px);flex:.7;min-height:0;align-items:stretch}
+.controls .grid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:1fr;gap:clamp(8px,.8vw,14px);min-width:0}
+.startstop{flex:none;align-self:center;width:clamp(170px,22vh,250px);height:clamp(170px,22vh,250px);border-radius:50%;cursor:pointer;touch-action:manipulation;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#f2f2f4;
+  background:radial-gradient(circle at 50% 35%,#2b2b31 0,#111114 55%,#050506 100%);
+  border:clamp(8px,1vh,12px) solid #b9b9c2;box-shadow:0 0 0 3px #3a3a42,0 0 0 7px #111,inset 0 6px 14px #ffffff14,inset 0 -10px 24px #000c,0 12px 30px #000a;transition:transform .08s,box-shadow .2s}
+.startstop:active{transform:scale(.96)}
+.startstop .ss-top,.startstop .ss-bot{font-size:clamp(13px,1.5vh,18px);letter-spacing:.3em;color:#a8a8b2;font-weight:700}
+.startstop .ss-main{font-size:clamp(34px,4.6vh,54px);font-weight:900;letter-spacing:.08em}
+.startstop[aria-pressed="true"]{box-shadow:0 0 0 3px #d5001c,0 0 0 7px #111,0 0 40px #ff2a3d88,inset 0 6px 14px #ffffff14,inset 0 -10px 24px #000c}
+.startstop[aria-pressed="true"] .ss-main{color:#ff2a3d}
+.drive{display:flex;flex-direction:column;gap:6px;align-items:flex-start;padding-left:clamp(10px,1vw,20px);border-left:2px solid var(--line)}
+.switch{display:flex;align-items:center;gap:12px;cursor:pointer;font-size:clamp(13px,.95vw,18px);line-height:1.2}
+.switch input{position:absolute;opacity:0;width:1px;height:1px}
+.switch .knob{width:72px;height:40px;border-radius:20px;background:#33333c;position:relative;flex:none;transition:background .15s}
+.switch .knob:after{content:"";position:absolute;top:4px;left:4px;width:32px;height:32px;border-radius:50%;background:#e9e9ee;transition:left .15s}
+.switch input:checked+.knob{background:var(--red)}
+.switch input:checked+.knob:after{left:36px}
+.gps{font-size:clamp(13px,.9vw,17px);color:var(--dim);font-variant-numeric:tabular-nums}
+.gps.ok{color:#7ee0a5}
 .btn{background:linear-gradient(180deg,var(--panel2),var(--panel));border:2px solid var(--line);border-radius:var(--radius);
   font-size:clamp(17px,1.3vw,27px);font-weight:700;padding:6px 12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:60px;touch-action:manipulation;transition:transform .06s,border-color .15s}
 .btn small{font-size:clamp(11px,.75vw,15px);font-weight:500;color:var(--dim)}
@@ -45,7 +64,7 @@ h1 span{color:var(--red2)}
 .btn.start{border-color:#1f6b45;background:linear-gradient(180deg,#123222,#0b1a12)}
 .btn.off{border-color:#6b1f28;background:linear-gradient(180deg,#32121a,#1a0b0e)}
 .btn.active{border-color:var(--red2);box-shadow:0 0 0 2px var(--red) inset}
-.revbar{background:var(--panel);border:2px solid var(--line);border-radius:22px;padding:clamp(6px,1vh,14px) clamp(14px,1.4vw,26px);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(12px,1.4vw,26px)}
+.revbar{background:var(--panel);border:2px solid var(--line);border-radius:22px;padding:clamp(6px,1vh,14px) clamp(14px,1.4vw,26px);display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:clamp(12px,1.4vw,26px)}
 .revbar .lbl{font-size:clamp(16px,1.2vw,24px);font-weight:700;white-space:nowrap}
 .revbar .lbl small{display:block;font-weight:400;font-size:clamp(11px,.75vw,14px);color:var(--dim)}
 .revval{font-size:clamp(20px,1.8vw,36px);font-weight:800;font-variant-numeric:tabular-nums;min-width:6ch;text-align:center}
@@ -61,32 +80,10 @@ input[type=range]:focus{outline:none}
 .vol input::-webkit-slider-thumb{-webkit-appearance:none;width:36px;height:36px;margin-top:-12px;border-radius:50%;background:#e9e9ee;border:3px solid var(--red)}
 .chk{display:flex;align-items:center;gap:10px;font-size:clamp(13px,.9vw,17px);white-space:nowrap;cursor:pointer}
 .chk input{width:28px;height:28px;accent-color:var(--red)}
-footer{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(8px,1.2vw,20px)}
-.card{background:var(--panel);border:2px solid var(--line);border-radius:var(--radius);padding:clamp(6px,.9vh,12px) clamp(12px,1vw,18px);font-size:clamp(12px,.85vw,16px);line-height:1.42}
-.card h2{margin:0 0 6px;font-size:clamp(14px,1vw,19px)}
-.seg{display:flex;gap:8px;margin-bottom:6px}
-.seg button{flex:1;min-height:52px;border-radius:12px;border:2px solid var(--line);background:var(--panel2);cursor:pointer;font-size:clamp(13px,.95vw,18px);font-weight:700}
-.seg button[aria-pressed="true"]{border-color:var(--red);background:#2a0a10}
-#outInfo{color:var(--dim)} #outInfo.warn{color:#ffd08a} #outInfo ul{margin:4px 0 0;padding-left:20px}
-#sinkRow{display:none;align-items:center;gap:8px;margin-top:6px}
-#sinkRow select{font:inherit;min-height:44px;background:var(--panel2);color:var(--txt);border:2px solid var(--line);border-radius:10px;padding:4px 8px;max-width:100%}
-.safety{border-color:#5a4416;background:#15110a} .safety b{color:#ffcf6b}
-.disc{color:var(--dim);font-size:clamp(10px,.7vw,13px);margin-top:5px}
-#overlay{position:fixed;inset:0;background:rgba(5,5,7,.93);display:flex;align-items:center;justify-content:center;z-index:10;cursor:pointer;backdrop-filter:blur(4px)}
-#overlay .box{text-align:center;max-width:900px;padding:30px}
-#overlay .big{display:inline-flex;align-items:center;justify-content:center;width:clamp(170px,15vw,250px);height:clamp(170px,15vw,250px);border-radius:50%;border:6px solid var(--red);font-size:clamp(66px,5.6vw,104px);margin-bottom:20px;box-shadow:0 0 50px #d5001c55;animation:pulse 1.8s infinite}
-#overlay h2{font-size:clamp(28px,2.5vw,48px);margin:0 0 10px} #overlay p{font-size:clamp(15px,1.15vw,21px);color:var(--dim);margin:6px 0}
-@keyframes pulse{50%{box-shadow:0 0 90px #d5001caa}}
-.hidden{display:none!important}
-@media (max-width:1100px){html,body{overflow:auto}.controls{grid-template-columns:1fr 1fr}.cluster{min-height:320px}footer{grid-template-columns:1fr}header{flex-wrap:wrap}}
+@media (max-width:1100px){html,body{overflow:auto}.controls .grid{grid-template-columns:1fr 1fr}.revbar{grid-template-columns:1fr}.cluster{min-height:320px}header{flex-wrap:wrap}}
 </style>
 </head>
 <body>
-<div id="overlay" role="button" tabindex="0" aria-label="Tap to enable sound">
-  <div class="box"><div class="big">🔊</div><h2>Tap to enable sound</h2>
-  <p>Browsers only allow audio after you touch the screen.</p>
-  <p>The sound is synthesized live and plays through the car's cabin speakers. Best used while parked.</p></div>
-</div>
 <header>
   <h1>Flat-<span>Six</span> Sound</h1>
   <div class="presets" id="presets" role="group" aria-label="Engine character"></div>
@@ -97,38 +94,26 @@ footer{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:cla
   <canvas id="tach" aria-label="Instrument cluster"></canvas>
 </section>
 <section class="controls" id="controls">
-  <button class="btn start" data-cmd="start">Start engine<small>Cold start, settles to idle</small></button>
-  <button class="btn" data-cmd="idle">Idle<small>Lift off, back to idle</small></button>
-  <button class="btn" data-cmd="blip">Rev blip<small>Quick stab of throttle</small></button>
-  <button class="btn" data-cmd="redline">Rev to redline<small>Full throttle into the limiter</small></button>
-  <button class="btn" data-cmd="launch">Launch &amp; upshifts<small>Accelerate through the gears</small></button>
-  <button class="btn" data-cmd="downshift">Downshift<small>With throttle blip (rev-match)</small></button>
-  <button class="btn" data-cmd="pops">Overrun pops<small>Crackles on lift-off</small></button>
-  <button class="btn off" data-cmd="off">Engine off<small>Shut down</small></button>
+  <button id="startBtn" class="startstop" aria-pressed="false" aria-label="Engine start / stop"><span class="ss-top">ENGINE</span><span class="ss-main" id="ssMain">START</span><span class="ss-bot" id="ssBot">STOP</span></button>
+  <div class="grid">
+    <button class="btn" data-cmd="idle">Idle<small>Lift off, back to idle</small></button>
+    <button class="btn" data-cmd="blip">Rev blip<small>Quick stab of throttle</small></button>
+    <button class="btn" data-cmd="redline">Rev to redline<small>Full throttle into the limiter</small></button>
+    <button class="btn" data-cmd="launch">Launch &amp; upshifts<small>Accelerate through the gears</small></button>
+    <button class="btn" data-cmd="downshift">Downshift<small>With throttle blip (rev-match)</small></button>
+    <button class="btn" data-cmd="pops">Overrun pops<small>Crackles on lift-off</small></button>
+  </div>
 </section>
 <section class="revbar">
   <div class="lbl">Rev pedal<small>Drag to set rpm</small></div>
   <div><input type="range" id="rev" min="900" max="9000" step="10" value="900" aria-label="Target rpm"><div class="ticks" id="ticks"></div></div>
   <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div class="revval" id="revVal">900</div>
     <label class="chk"><input type="checkbox" id="springBack" checked>Return to idle on release</label></div>
+  <div class="drive">
+    <label class="switch"><input type="checkbox" id="driveMode" checked><span class="knob"></span><span class="sw-lbl">Drive mode:<br><b>Follow speed (GPS)</b></span></label>
+    <div class="gps" id="gpsStatus">GPS off</div>
+  </div>
 </section>
-<footer>
-  <div class="card">
-    <h2>Audio output</h2>
-    <div class="seg" role="group" aria-label="Audio output">
-      <button id="outCabin" aria-pressed="true">Car speakers (cabin)</button>
-      <button id="outExt" aria-pressed="false">External speaker (pedestrian warning)</button>
-    </div>
-    <div id="outInfo">Sound plays through the car's cabin speakers.</div>
-    <div id="sinkRow"><label for="sinkSel">Output device:</label><select id="sinkSel"></select></div>
-  </div>
-  <div class="card safety">
-    <h2>⚠️ Use responsibly</h2>
-    <b>Cabin only.</b> Don't operate or look at this app while driving – use it parked, or let a passenger run it.
-    Keep the volume reasonable, never mask the car's own warning sounds, and be considerate of people around you.
-    <div class="disc">Not affiliated with, endorsed or sponsored by Porsche AG or Tesla, Inc. "911", "GT3" and "Turbo S" are used descriptively only ("inspired by"). All sounds are synthesized in real time; no recordings of real cars are used.</div>
-  </div>
-</footer>
 <script>
 'use strict';
 /* =====================================================================
@@ -149,7 +134,7 @@ const PRESETS = {
     res: [[170, 2.2, 0.9], [540, 3, 0.65], [1350, 4, 0.55], [2700, 5, 0.35]],
     intakeNoise: 0.16, intakeTone: 0.24, mech: 0.035, level: 1.0,
     crackle: 0.8, crackleLevel: 0.55, crackleTime: 1.4,
-    ratios: [0, 3.75, 2.38, 1.72, 1.34, 1.11, 0.96], topGear: 4, gearK: 13
+    ratios: [0, 3.75, 2.38, 1.72, 1.34, 1.11, 0.96], pdk: [3.75, 2.38, 1.72, 1.34, 1.11, 0.96, 0.84], final: 4.0, upMax: 6500, topGear: 4, gearK: 13
   },
   turbo: {
     id: 'turbo', name: 'Inspired by 911 Turbo S', sub: 'Twin-turbo · whistle & blow-off', lope: 0.08, room: 0.2, flap: 0, whine: 0.003,
@@ -160,7 +145,7 @@ const PRESETS = {
     intakeNoise: 0.1, intakeTone: 0.07, mech: 0.02, level: 1.15,
     crackle: 0.35, crackleLevel: 0.4, crackleTime: 0.9,
     turbo: true, whistle: 0.035, bov: 0.55,
-    ratios: [0, 3.91, 2.29, 1.65, 1.30, 1.08, 0.88], topGear: 4, gearK: 14
+    ratios: [0, 3.91, 2.29, 1.65, 1.30, 1.08, 0.88], pdk: [3.91, 2.29, 1.65, 1.30, 1.08, 0.88, 0.62], final: 3.55, upMax: 6200, topGear: 4, gearK: 14
   },
   classic: {
     id: 'classic', name: 'Inspired by classic air-cooled 911', sub: 'Air-cooled flat-six · fan whine & rasp', lope: 0.22, room: 0.14, flap: 0, whine: 0.006,
@@ -171,7 +156,7 @@ const PRESETS = {
     intakeNoise: 0.24, intakeTone: 0.16, mech: 0.05, level: 1.0,
     crackle: 1.0, crackleLevel: 0.6, crackleTime: 1.9,
     fan: 0.035,
-    ratios: [0, 3.18, 1.83, 1.26, 0.96, 0.75], topGear: 3, gearK: 10
+    ratios: [0, 3.18, 1.83, 1.26, 0.96, 0.75], pdk: [3.82, 2.20, 1.52, 1.22, 1.02, 0.84, 0.71], final: 3.44, upMax: 6000, topGear: 3, gearK: 10
   }
 };
 
@@ -181,7 +166,8 @@ class Sim {
   reset() {
     Object.assign(this, { rpm: 0, running: false, cranking: false, thr: 0, load: 0, gear: 0, boost: 0, fuelCut: false,
       coldExtra: 0, overrun: 0, crackleBoost: 1, shift: null, brake: 0, prog: null, sliderTarget: null,
-      events: [], prevIntent: 0, t: 0, speed: 0, oil: 38 });
+      events: [], prevIntent: 0, t: 0, speed: 0, oil: 38,
+      driveMode: false, driveSpeed: null, vs: 0, vPrev: 0, acc: 0, dGear: 1, lastShift: -9, drive: false, driveTarget: 0 });
   }
   setPreset(p) { this.p = p; if (this.rpm > p.limiter) this.rpm = p.limiter - 200; if (this.gear >= p.ratios.length) this.gear = p.ratios.length - 1; }
   torque(r) {
@@ -199,6 +185,45 @@ class Sim {
     this.shift = { to, dir, t: 0, dur: dir > 0 ? 0.09 : 0.2, target };
     if (dir > 0) { this.events.push({ type: 'shiftCrack' }); if (this.p.turbo && this.boost > 0.4) this.events.push({ type: 'bov', amt: this.boost * 0.45 }); }
     return true;
+  }
+  /* ---- Follow-speed mode: road speed (km/h) -> simulated 7-speed PDK -> rpm + load ---- */
+  rpmAtGear(g, v) { const p = this.p; return v / 3.6 / 2.07 * 60 * p.pdk[g - 1] * p.final; }
+  driveActive() { return this.driveMode && this.driveSpeed != null && this.running && !this.cranking && !this.prog && this.sliderTarget == null; }
+  driveCalc(dt) {
+    const p = this.p;
+    this.vs += (this.driveSpeed - this.vs) * (1 - Math.exp(-dt / 0.5));
+    const v = this.vs, a = (v - this.vPrev) / Math.max(dt, 1e-4); this.vPrev = v;
+    this.acc += (a - this.acc) * (1 - Math.exp(-dt / 0.7));           // km/h per second, smoothed
+    const acc = this.acc;
+    let load = acc > 0.4 ? clamp(0.2 + acc / 8, 0, 1) : acc < -1 ? 0 : clamp(0.1 + v / 700, 0, 0.35);   // cruise: small load rising with aero drag
+    if (!this.gear || this.gear > 7) this.gear = this.dGear;
+    let target;
+    if (v < 4) {
+      this.dGear = 1; if (!this.shift) this.gear = 1;
+      target = p.idle + (acc > 0.5 ? 1100 * load : 0);                  // stopped / pulling away: clutch slip
+      if (acc <= 0.4) load = 0;
+    } else {
+      const up = 2300 + (p.upMax - 2300) * smooth(0.15, 0.85, load);
+      const down = acc < -2 ? 2100 : 1250 + 1300 * load;
+      if (!this.shift && this.t - this.lastShift > 0.7) {
+        const r = this.rpmAtGear(this.dGear, v);
+        let to = 0;
+        if (r > up && this.dGear < 7 && acc > -0.5) to = this.dGear + 1;          // never upshift while slowing
+        else if (this.dGear > 1 && r < down && (load > 0.5 || this.rpmAtGear(this.dGear - 1, v) < 4300)) to = this.dGear - 1;
+        else if (load > 0.85 && this.dGear > 1 && this.rpmAtGear(this.dGear - 1, v) < up - 1500) to = this.dGear - 1;   // kickdown
+        if (to) {
+          const dir = to > this.dGear ? 1 : -1;
+          this.shift = { to, dir, t: 0, dur: dir > 0 ? 0.08 + (1 - load) * 0.1 : 0.18, target: this.rpmAtGear(to, v), drive: true };
+          if (dir > 0 && load > 0.55) { this.events.push({ type: 'shiftCrack' }); if (p.turbo && this.boost > 0.5) this.events.push({ type: 'bov', amt: this.boost * 0.4 }); }
+          this.dGear = to; this.lastShift = this.t;
+        }
+      }
+      target = Math.max(p.idle, this.rpmAtGear(this.dGear, v));
+      if (this.dGear === 1 && v < 15 && acc > 0.5) target = Math.max(target, p.idle + 1500 * load);
+    }
+    this.driveTarget = Math.min(target, p.limiter - 50);
+    this.driveLoad = load;
+    return load;
   }
   startPhases() {
     return [
@@ -261,6 +286,10 @@ class Sim {
     let cmd = 0;
     if (this.sliderTarget != null && this.running) cmd = this.holdThr(this.sliderTarget);
     const pt = this.runProgram(dt); if (pt != null) cmd = pt;
+    const drive = this.driveActive();
+    if (drive) cmd = this.driveCalc(dt);
+    else if (this.drive) { this.gear = 0; this.shift = null; }     // leaving drive mode
+    this.drive = drive;
     this.coldExtra *= Math.exp(-dt / 6);
     const idleT = p.idle + this.coldExtra;
     const idleThr = this.running ? clamp(this.drag(idleT) / (this.torque(idleT) * p.maxAccel) + (idleT - this.rpm) * 0.0006, 0, 0.6) : 0;
@@ -283,6 +312,12 @@ class Sim {
     // dynamics
     if (this.cranking) {
       this.rpm = 210 + 70 * Math.sin(this.t * 2 * Math.PI * 4.2) + 20 * Math.sin(this.t * 2 * Math.PI * 9.7);
+    } else if (drive) {
+      if (this.shift) {
+        const s = this.shift; s.t += dt; s.target = this.rpmAtGear(s.to, this.vs);
+        this.rpm += (s.target - this.rpm) * (1 - Math.exp(-dt / (s.dir > 0 ? 0.03 : 0.05)));
+        if (s.t >= s.dur) { this.gear = s.to; this.shift = null; if (s.dir < 0 && this.driveLoad < 0.2) this.overrun = Math.max(this.overrun, p.crackleTime * 0.6); }
+      } else { this.gear = this.dGear; this.rpm += (this.driveTarget - this.rpm) * (1 - Math.exp(-dt / 0.12)); }
     } else if (this.shift) {
       const s = this.shift; s.t += dt;
       this.rpm += (s.target - this.rpm) * (1 - Math.exp(-dt / (s.dir > 0 ? 0.03 : 0.05)));
@@ -297,7 +332,8 @@ class Sim {
       if (this.rpm < 0) this.rpm = 0;
     }
     // road speed (km/h) and oil temperature, for the cluster
-    if (this.gear && !this.cranking) this.speed = this.rpm / (p.ratios[this.shift ? this.shift.to : this.gear] * 3.97) * 2.07 * 0.06;
+    if (drive) this.speed = this.vs;
+    else if (this.gear && !this.cranking && this.p.ratios[this.shift ? this.shift.to : this.gear]) this.speed = this.rpm / (p.ratios[this.shift ? this.shift.to : this.gear] * 3.97) * 2.07 * 0.06;
     else this.speed = Math.max(0, this.speed - (1.5 + this.brake * 30) * dt * (this.speed > 0 ? 1 : 0));
     if (this.running) this.oil += (92 + 12 * this.load - this.oil) * dt / 40; else this.oil += (38 - this.oil) * dt / 300;
     // overrun crackles
@@ -602,16 +638,89 @@ async function unlock() {
   app.eng.setVolume(app.vol); app.eng.start();
   app.last = performance.now();
   app.timer = setInterval(tick, 15);
-  $('overlay').classList.add('hidden');
-  detectOutputs().then(r => { app.outputs = r; renderSinks(r); });
   document.addEventListener('visibilitychange', () => { if (!document.hidden && app.ctx.state !== 'running') app.ctx.resume(); });
 }
-$('overlay').addEventListener('click', unlock);
-$('overlay').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') unlock(); });
+
+/* ---------- GPS speed source (Follow-speed drive mode) ---------- */
+const gps = { id: null, status: 'off', kmh: null, acc: 0, fixT: 0, last: null, sim: /[?&]sim=1\b/.test(location.search), simTimer: null };
+const GPS_TXT = { off: 'GPS off', waiting: 'Waiting for GPS…', denied: 'Location permission denied', unavailable: 'GPS unavailable',
+  unsupported: 'Location not supported', insecure: 'Location needs HTTPS', timeout: 'GPS timeout – retrying', lost: 'GPS signal lost' };
+function haversine(a, b) {
+  const R = 6371000, toR = x => x * Math.PI / 180, dLa = toR(b.lat - a.lat), dLo = toR(b.lon - a.lon);
+  const h = Math.sin(dLa / 2) ** 2 + Math.cos(toR(a.lat)) * Math.cos(toR(b.lat)) * Math.sin(dLo / 2) ** 2;
+  return 2 * R * Math.asin(Math.min(1, Math.sqrt(h)));
+}
+function onPos(pos) {
+  const c = pos.coords, t = pos.timestamp || Date.now(), here = { lat: c.latitude, lon: c.longitude, t };
+  let v = (c.speed != null && isFinite(c.speed) && c.speed >= 0) ? c.speed : null;
+  if (v == null && gps.last) {                       // no speed from the receiver: derive it from successive fixes
+    const dt = (t - gps.last.t) / 1000;
+    if (dt >= 0.4) { const d = haversine(gps.last, here); v = d < Math.max(4, (c.accuracy || 10) * 0.4) ? 0 : d / dt; }
+  }
+  gps.last = here;
+  if (v == null) v = gps.kmh != null ? gps.kmh / 3.6 : 0;
+  const kmh = clamp(v, 0, 95) * 3.6, now = performance.now();
+  if (gps.kmh != null && gps.fixT) { const dt = (now - gps.fixT) / 1000; if (dt > 0.2) gps.acc = clamp((kmh - gps.kmh) / dt, -40, 25); }
+  gps.kmh = kmh; gps.fixT = now; gps.status = 'ok';
+}
+function onPosErr(e) {
+  gps.status = e.code === 1 ? 'denied' : e.code === 2 ? 'unavailable' : 'timeout';
+  if (e.code === 1) { try { navigator.geolocation.clearWatch(gps.id); } catch (x) {} gps.id = null; }
+}
+function startGps() {
+  if (gps.sim) { if (!gps.simTimer) startSimDrive(); return; }
+  if (gps.id != null || gps.status === 'denied') return;
+  if (!('geolocation' in navigator)) { gps.status = 'unsupported'; return; }
+  if (window.isSecureContext === false) { gps.status = 'insecure'; return; }
+  gps.status = 'waiting';
+  gps.id = navigator.geolocation.watchPosition(onPos, onPosErr, { enableHighAccuracy: true, maximumAge: 0, timeout: 20000 });
+}
+function stopGps() {
+  if (gps.id != null) { try { navigator.geolocation.clearWatch(gps.id); } catch (e) {} }
+  if (gps.simTimer) clearInterval(gps.simTimer);
+  gps.id = null; gps.simTimer = null; gps.kmh = null; gps.last = null; gps.acc = 0;
+  if (gps.status !== 'denied') gps.status = 'off';
+}
+function gpsSpeedNow() {
+  if (gps.kmh == null) return null;
+  const age = (performance.now() - gps.fixT) / 1000;
+  if (age > 10) { if (gps.status === 'ok') gps.status = 'lost'; return null; }
+  return Math.max(0, gps.kmh + gps.acc * Math.min(age, 1.2));   // extrapolate between ~1 Hz fixes
+}
+// ?sim=1 – debug drive: fake 1 Hz fixes for 0 → 120 → 0 km/h (speed omitted on every other fix to exercise the fallback)
+function simProfile(t) {
+  const k = [[0, 0], [3, 0], [13, 100], [23, 120], [33, 120], [41, 40], [48, 70], [58, 0], [64, 0]];
+  t = t % 64;
+  for (let i = 1; i < k.length; i++) if (t <= k[i][0]) { const [t0, v0] = k[i - 1], [t1, v1] = k[i]; return v0 + (v1 - v0) * (t - t0) / (t1 - t0); }
+  return 0;
+}
+function startSimDrive() {
+  const t0 = performance.now(); let lat = 32.0853, lon = 34.7818, n = 0, lastT = t0;
+  gps.status = 'waiting';
+  const fire = () => {
+    const now = performance.now(), t = (now - t0) / 1000, kmh = simProfile(t);
+    lat += (kmh / 3.6) * ((now - lastT) / 1000) / 111320; lastT = now;
+    onPos({ timestamp: Date.now(), coords: { latitude: lat, longitude: lon, accuracy: 5, speed: (n++ % 2) ? null : kmh / 3.6 } });
+  };
+  fire(); gps.simTimer = setInterval(fire, 1000);
+}
+$('driveMode').addEventListener('change', e => { if (e.target.checked && (app.sim.running || app.sim.cranking)) startGps(); else if (!e.target.checked) stopGps(); });
+
+/* ---------- Engine START / STOP ---------- */
+$('startBtn').addEventListener('click', () => {
+  unlock();
+  if (app.ctx && app.ctx.state !== 'running') app.ctx.resume();
+  const sim = app.sim;
+  if (sim.running || sim.cranking) { sim.command('off'); stopGps(); }
+  else { sim.sliderTarget = null; sim.command('start'); if ($('driveMode').checked) startGps(); }
+});
 
 function tick() {
   const now = performance.now(); let dt = Math.min(0.1, (now - app.last) / 1000); app.last = now;
   const sim = app.sim, h = 1 / 240;
+  sim.driveMode = $('driveMode').checked;
+  if (sim.driveMode && (sim.running || sim.cranking) && gps.status === 'off') startGps();
+  sim.driveSpeed = sim.driveMode ? gpsSpeedNow() : null;
   while (dt > 1e-6) { const s = Math.min(h, dt); sim.step(s); dt -= s; }
   if (app.eng) app.eng.apply(sim, app.ctx.currentTime + 0.025, 0.015);
 }
@@ -637,57 +746,6 @@ const release = () => { if ($('springBack').checked) { rev.value = PRESETS[app.p
 $('springBack').addEventListener('change', () => { if ($('springBack').checked) release(); });
 $('vol').addEventListener('input', e => { app.vol = e.target.value / 100; $('volOut').textContent = e.target.value + '%'; if (app.eng) app.eng.setVolume(app.vol); });
 
-/* ---------- Output routing / feature detection ---------- */
-async function detectOutputs() {
-  const r = {
-    ctxSink: typeof AudioContext !== 'undefined' && 'setSinkId' in AudioContext.prototype,
-    elSink: typeof HTMLMediaElement !== 'undefined' && 'setSinkId' in HTMLMediaElement.prototype,
-    enumerate: !!(navigator.mediaDevices && navigator.mediaDevices.enumerateDevices),
-    outputs: [], pws: null, error: null
-  };
-  if (r.enumerate) {
-    try { r.outputs = (await navigator.mediaDevices.enumerateDevices()).filter(d => d.kind === 'audiooutput'); }
-    catch (e) { r.error = String(e && e.message || e); }
-  }
-  r.pws = r.outputs.find(o => /pedestrian|external|exterior|outside|pws|avas|boombox/i.test(o.label || '')) || null;
-  return r;
-}
-const yes = b => b ? 'supported' : 'not supported';
-function sinkLabel(o, i) { return o.label || (o.deviceId === 'default' ? 'System default' : 'Audio output #' + (i + 1) + ' (name hidden by the browser)'); }
-function renderSinks(r) {
-  const sel = $('sinkSel'); sel.innerHTML = '';
-  if (r.ctxSink && r.outputs.length > 1) {
-    r.outputs.forEach((o, i) => { const op = document.createElement('option'); op.value = o.deviceId; op.textContent = sinkLabel(o, i); sel.appendChild(op); });
-    $('sinkRow').style.display = 'flex';
-  }
-}
-$('sinkSel').addEventListener('change', async e => {
-  if (!app.ctx || !app.ctx.setSinkId) return;
-  try { await app.ctx.setSinkId(e.target.value === 'default' ? '' : e.target.value); } catch (err) { $('outInfo').textContent = 'Could not route audio to that device: ' + err.message; }
-});
-function setOut(ext) { $('outCabin').setAttribute('aria-pressed', ext ? 'false' : 'true'); $('outExt').setAttribute('aria-pressed', ext ? 'true' : 'false'); }
-$('outCabin').addEventListener('click', async () => {
-  setOut(false); const info = $('outInfo'); info.className = ''; info.textContent = "Sound plays through the car's cabin speakers.";
-  if (app.ctx && app.ctx.setSinkId && app.ctx.sinkId) { try { await app.ctx.setSinkId(''); } catch (e) {} }
-});
-$('outExt').addEventListener('click', async () => {
-  setOut(true);
-  const info = $('outInfo'); info.className = 'warn'; info.textContent = 'Checking which audio outputs the browser exposes…';
-  const r = await detectOutputs(); app.outputs = r; renderSinks(r);
-  const list = r.outputs.length ? '<ul>' + r.outputs.map((o, i) => '<li>' + esc(sinkLabel(o, i)) + '</li>').join('') + '</ul>' : '<div>No additional output devices found.</div>';
-  const diag = '<div>Check: AudioContext.setSinkId – ' + yes(r.ctxSink) + ' · HTMLMediaElement.setSinkId – ' + yes(r.elSink) +
-    ' · enumerateDevices – ' + yes(r.enumerate) + (r.error ? ' (error: ' + esc(r.error) + ')' : '') + ' · outputs found: ' + r.outputs.length + '</div>' + list;
-  if (r.pws && r.ctxSink && app.ctx) {
-    try { await app.ctx.setSinkId(r.pws.deviceId); info.innerHTML = 'Found a device that looks like an external speaker and routed audio to it. Use with care, parked only.' + diag; return; }
-    catch (e) { /* fall through */ }
-  }
-  info.innerHTML = "<b>The external speaker isn't accessible from the browser.</b> The Tesla browser does not expose the Pedestrian Warning System speaker to web pages. " +
-    'External sounds (Boombox) only play from files on a USB drive via Toybox while parked, and after NHTSA recall 22V-063 external sounds are blocked while driving. ' +
-    "Sound continues through the car's cabin speakers." + diag;
-  setOut(false);
-  if (app.ctx && app.ctx.setSinkId && app.ctx.sinkId) { try { await app.ctx.setSinkId(''); } catch (e) {} }
-});
-function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
 /* ---------- Premium instrument cluster ---------- */
 const cv = $('tach'), g2 = cv.getContext('2d');
@@ -738,6 +796,8 @@ function draw() {
   // speedometer (left)
   const sa = dial(g, sx, sy, sR, 320, 40, 20, 'km/h', null, v => String(v), shownSpd, Math.PI * 0.75, Math.PI * 1.5);
   g.fillStyle = '#fff'; g.font = '700 ' + Math.round(sR * 0.26) + 'px ' + FONT; g.fillText(String(Math.round(shownSpd)), sx, sy + sR * 0.45);
+  g.font = '700 ' + Math.round(sR * 0.1) + 'px ' + FONT; g.fillStyle = sim.drive ? '#7ee0a5' : '#6d6d78';
+  g.fillText(sim.drive ? 'GPS' : sim.driveMode ? 'NO GPS' : 'SIM', sx, sy + sR * 0.68);
   needle(g, sx, sy, sR, sa, 0.9);
   // right gauge: boost (turbo) or oil temperature
   const aa = p.turbo
@@ -753,7 +813,7 @@ function draw() {
   g.fillStyle = '#fff'; g.font = '800 ' + Math.round(R * 0.19) + 'px ' + FONT; g.fillText(String(Math.round(shownRpm / 10) * 10), cx, cy + R * 0.38);
   const gear = sim.shift ? sim.shift.to : sim.gear;
   g.font = '800 ' + Math.round(R * 0.24) + 'px ' + FONT; g.fillStyle = gear ? '#c9a45c' : '#7d7d88';
-  g.fillText(gear ? String(gear) : 'N', cx, cy + R * 0.67);
+  g.fillText(gear ? (sim.drive ? 'D' : '') + gear : 'N', cx, cy + R * 0.67);
   needle(g, cx, cy, R, ta, 0.92);
   // shift lights
   const n = 9, lw = R * 0.15, gap = R * 0.05, tw = n * lw + (n - 1) * gap, ly = cy - R * 1.22;
@@ -768,13 +828,18 @@ function draw() {
   g.fillText(p.name.replace('Inspired by ', '').toUpperCase() + '  ·  ' + (sim.fuelCut ? 'LIMITER' : sim.shift ? (sim.shift.dir > 0 ? 'UPSHIFT' : 'DOWNSHIFT') : sim.overrun > 0 && sim.thr < 0.2 ? 'OVERRUN' : sim.running ? 'READY' : sim.cranking ? 'CRANKING' : 'OFF'), w - 18, 22); g.textAlign = 'center';
   const st = sim.statusKey, el = $('status');
   el.className = 'status' + (st === 'on' ? ' on' : st === 'crank' ? ' crank' : '');
-  $('statusTxt').textContent = { on: 'Engine running', crank: 'Cranking…', stopping: 'Shutting down…', off: 'Engine off' }[st] + (app.ctx && app.ctx.state !== 'running' ? ' · audio paused – tap a button' : '');
+  $('statusTxt').textContent = { on: 'Engine running', crank: 'Cranking…', stopping: 'Shutting down…', off: 'Engine off' }[st] + (sim.drive ? ' · following GPS speed' : '') + (app.ctx && app.ctx.state !== 'running' ? ' · audio paused' : '');
+  const on = sim.running || sim.cranking, sb = $('startBtn');
+  if (sb.getAttribute('aria-pressed') !== String(on)) { sb.setAttribute('aria-pressed', String(on)); $('ssMain').textContent = on ? 'STOP' : 'START'; $('ssBot').textContent = on ? 'START' : 'STOP'; }
+  const ge = $('gpsStatus'), gt = !$('driveMode').checked ? 'Manual rev pedal' : gps.status === 'ok' ? (gps.sim ? 'Simulated drive · ' : 'GPS · ') + Math.round(gps.kmh) + ' km/h' : GPS_TXT[gps.status];
+  if (ge.textContent !== gt) ge.textContent = gt;
+  ge.className = 'gps' + (gps.status === 'ok' && $('driveMode').checked ? ' ok' : '');
   document.querySelectorAll('[data-cmd]').forEach(b => b.classList.toggle('active', !!(sim.prog && sim.prog.name === b.dataset.cmd)));
   requestAnimationFrame(draw);
 }
 requestAnimationFrame(draw);
 
-window.Boxer6 = { PRESETS, Sim, Engine, renderDemo, encodeWav, app, detectOutputs };
+window.Boxer6 = { PRESETS, Sim, Engine, renderDemo, encodeWav, app, gps };
 
 /*PWA-START*/
 if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
