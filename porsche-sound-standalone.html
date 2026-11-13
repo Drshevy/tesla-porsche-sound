@@ -146,7 +146,7 @@ class Sim {
     Object.assign(this, { rpm: 0, running: false, cranking: false, thr: 0, load: 0, gear: 0, boost: 0, fuelCut: false,
       coldExtra: 0, overrun: 0, crackleBoost: 1, shift: null, brake: 0, prog: null, sliderTarget: null,
       events: [], prevIntent: 0, t: 0, speed: 0, oil: 38,
-      driveMode: false, driveSpeed: null, vs: 0, vPrev: 0, acc: 0, dGear: 1, lastShift: -9, drive: false, driveTarget: 0 });
+      driveMode: false, driveSpeed: null, driveAcc: null, jerk: 0, dl: 0, vs: 0, vPrev: 0, acc: 0, dGear: 1, lastShift: -9, drive: false, driveTarget: 0 });
   }
   setPreset(p) { this.p = p; if (this.rpm > p.limiter) this.rpm = p.limiter - 200; if (this.gear >= p.ratios.length) this.gear = p.ratios.length - 1; }
   torque(r) {
@@ -170,17 +170,26 @@ class Sim {
   driveActive() { return this.driveMode && this.driveSpeed != null && this.running && !this.cranking && !this.prog && this.sliderTarget == null; }
   driveCalc(dt) {
     const p = this.p;
-    this.vs += (this.driveSpeed - this.vs) * (1 - Math.exp(-dt / 0.5));
-    const v = this.vs, a = (v - this.vPrev) / Math.max(dt, 1e-4); this.vPrev = v;
-    this.acc += (a - this.acc) * (1 - Math.exp(-dt / 0.7));           // km/h per second, smoothed
+    this.vs += (this.driveSpeed - this.vs) * (1 - Math.exp(-dt / 0.12));   // estimator is already smooth: keep lag minimal
+    const v = this.vs, aRaw = this.driveAcc != null ? this.driveAcc : (v - this.vPrev) / Math.max(dt, 1e-4); this.vPrev = v;
+    const prevAcc = this.acc;
+    this.acc += (aRaw - this.acc) * (1 - Math.exp(-dt / 0.18));          // km/h per second
+    this.jerk = (this.jerk || 0) + ((this.acc - prevAcc) / Math.max(dt, 1e-4) - (this.jerk || 0)) * (1 - Math.exp(-dt / 0.25));
     const acc = this.acc;
-    let load = acc > 0.4 ? clamp(0.2 + acc / 8, 0, 1) : acc < -1 ? 0 : clamp(0.1 + v / 700, 0, 0.35);   // cruise: small load rising with aero drag
+    // throttle/load inferred from longitudinal acceleration (+ jerk for a fast tip-in)
+    let raw = acc > 0.3 ? clamp(0.22 + acc / 7 + Math.max(0, this.jerk) * 0.04, 0, 1)
+            : acc < -0.8 ? 0 : clamp(0.1 + v / 700 + Math.max(0, acc) * 0.3, 0, 0.35);   // cruise: light load rising with aero drag
+    if (v < 4 && acc <= 0.4) raw = 0;
+    this.dl = (this.dl || 0) + (raw - (this.dl || 0)) * (1 - Math.exp(-dt / (raw > (this.dl || 0) ? 0.1 : 0.25)));
+    let load = this.dl;
+    // lift-off / braking onset -> overrun crackle, stronger when braking hard
+    if (acc < -0.8 && prevAcc >= -0.8 && this.rpm > 2200) this.overrun = Math.max(this.overrun, p.crackleTime * (acc < -3 ? 1 : 0.6));
+    this.crackleBoost = acc < -0.8 ? 1 + clamp(-acc / 6, 0, 1) : 1;
     if (!this.gear || this.gear > 7) this.gear = this.dGear;
     let target;
     if (v < 4) {
       this.dGear = 1; if (!this.shift) this.gear = 1;
       target = p.idle + (acc > 0.5 ? 1100 * load : 0);                  // stopped / pulling away: clutch slip
-      if (acc <= 0.4) load = 0;
     } else {
       const up = 2300 + (p.upMax - 2300) * smooth(0.15, 0.85, load);
       const down = acc < -2 ? 2100 : 1250 + 1300 * load;
@@ -361,9 +370,20 @@ class Engine {
     this.out = G(0.7); this.out.connect(dest);
     const comp = c.createDynamicsCompressor(); comp.threshold.value = -16; comp.knee.value = 10; comp.ratio.value = 4; comp.attack.value = 0.004; comp.release.value = 0.15;
     comp.connect(this.out);
-    const hp = mk('highpass', [28, 0.7]); hp.connect(comp);
+    const hp = mk('highpass', [28, 0.7]);
+    // low-frequency body/cabin resonance
+    const body1 = c.createBiquadFilter(); body1.type = 'peaking'; body1.frequency.value = 58; body1.Q.value = 1.4; body1.gain.value = 5;
+    const body2 = c.createBiquadFilter(); body2.type = 'peaking'; body2.frequency.value = 125; body2.Q.value = 1.2; body2.gain.value = 2;
+    hp.connect(body1); body1.connect(body2); body2.connect(comp);
     this.bus = G(0.9); this.bus.connect(hp);
     this.fx = G(1); this.fx.connect(hp);
+    // early reflections off glass/roof (short taps, darkened)
+    const erLP = mk('lowpass', [3200, 0.7]); erLP.connect(hp);
+    for (const [d, gv, pan] of [[0.0061, 0.16, -0.5], [0.0107, 0.12, 0.6], [0.0167, 0.09, -0.3], [0.0233, 0.06, 0.4]]) {
+      const dl = c.createDelay(0.05); dl.delayTime.value = d; const eg = G(gv);
+      this.bus.connect(dl); this.fx.connect(dl); dl.connect(eg);
+      if (c.createStereoPanner) { const pn = c.createStereoPanner(); pn.pan.value = pan; eg.connect(pn); pn.connect(erLP); } else eg.connect(erLP);
+    }
     // short synthetic cabin/body reflection (convolution with generated IR – no files)
     if (c.createConvolver) {
       const conv = c.createConvolver(), sr = c.sampleRate, n = Math.floor(sr * 0.32), ir = c.createBuffer(2, n, sr), rr = rng(77);
@@ -434,6 +454,10 @@ class Engine {
       const fBP = mk('bandpass', [900, 0.9]); this.fanG = G(0); this.fan.connect(fBP); fBP.connect(this.fanG); this.fanG.connect(this.bus);
       this.fanBP = fBP; this.oscs.push(this.fan);
     }
+    // road (tyre) rumble and wind noise, rising with speed
+    const rN = noiseSrc(0.9), rLP = mk('lowpass', [170, 0.8]), rPk = c.createBiquadFilter(); rPk.type = 'peaking'; rPk.frequency.value = 90; rPk.Q.value = 1; rPk.gain.value = 4;
+    this.roadG = G(0); rN.connect(rLP); rLP.connect(rPk); rPk.connect(this.roadG); this.roadG.connect(hp);
+    const wN = noiseSrc(1.7); this.windBP = mk('bandpass', [900, 0.55]); this.windG = G(0); wN.connect(this.windBP); this.windBP.connect(this.windG); this.windG.connect(hp);
     this.crackleBufs = this.makeCrackles(10);
   }
   makeCrackles(n) {
@@ -525,6 +549,10 @@ class Engine {
     set(this.inBP.frequency, 260 + r * 0.33, 0.03);
     set(this.inToneG.gain, alive * p.intakeTone * (0.15 + 0.85 * load) * Math.pow(rn, 1.2) * (comb > 0.2 ? 1 : 0.3), 0.02);
     set(this.mechG.gain, alive * p.mech * rn, 0.05);
+    const kmh = Math.max(0, sim.speed || 0), on = (sim.running || r > 1) ? 1 : 0;
+    set(this.roadG.gain, on * 0.11 * Math.pow(Math.min(1, kmh / 120), 1.2), 0.3);
+    set(this.windG.gain, on * 0.05 * Math.min(1.6, Math.pow(kmh / 150, 2)), 0.3);
+    set(this.windBP.frequency, 600 + kmh * 6, 0.3);
     set(this.starterG.gain, sim.cranking ? 0.1 : 0, 0.015);
     if (sim.cranking) set(this.starter.frequency, 120 + r * 0.6, 0.02);
     if (this.wh) {
@@ -621,18 +649,51 @@ function haversine(a, b) {
   const h = Math.sin(dLa / 2) ** 2 + Math.cos(toR(a.lat)) * Math.cos(toR(b.lat)) * Math.sin(dLo / 2) ** 2;
   return 2 * R * Math.asin(Math.min(1, Math.sqrt(h)));
 }
+/* Alpha-beta (constant-acceleration) estimator: corrects speed + acceleration at each ~1 Hz fix and
+   extrapolates between fixes, so the engine reacts before the next fix arrives. */
+const est = { v: null, a: 0, t: 0 };
+function estUpdate(z, now, avgDt) {
+  if (est.v == null) { est.v = z; est.a = 0; est.t = now; return; }
+  const dt = clamp((now - est.t) / 1000, 0.05, 5);
+  if (avgDt) z += est.a * avgDt / 2;                // speed from two positions is an average: refer it to "now"
+  const vp = est.v + est.a * dt, r = z - vp;
+  const alpha = 0.85, beta = 0.7;                    // tuned on simulated drives: quick onset, ~1 km/h mean error
+  est.v = Math.max(0, vp + alpha * r); est.a = clamp(est.a + beta * r / dt, -40, 25); est.t = now;
+  if (z < 0.8 && est.v < 3) { est.v = 0; est.a = Math.min(est.a, 0) * 0.3; }
+}
 function onPos(pos) {
   const c = pos.coords, t = pos.timestamp || Date.now(), here = { lat: c.latitude, lon: c.longitude, t };
-  let v = (c.speed != null && isFinite(c.speed) && c.speed >= 0) ? c.speed : null;
+  let v = (c.speed != null && isFinite(c.speed) && c.speed >= 0) ? c.speed : null, avgDt = 0;
   if (v == null && gps.last) {                       // no speed from the receiver: derive it from successive fixes
     const dt = (t - gps.last.t) / 1000;
-    if (dt >= 0.4) { const d = haversine(gps.last, here); v = d < Math.max(4, (c.accuracy || 10) * 0.4) ? 0 : d / dt; }
+    if (dt >= 0.4) { const d = haversine(gps.last, here); v = d < Math.max(4, (c.accuracy || 10) * 0.4) ? 0 : d / dt; avgDt = dt; }
   }
   gps.last = here;
-  if (v == null) v = gps.kmh != null ? gps.kmh / 3.6 : 0;
+  if (v == null) v = est.v != null ? est.v / 3.6 : 0;
   const kmh = clamp(v, 0, 95) * 3.6, now = performance.now();
-  if (gps.kmh != null && gps.fixT) { const dt = (now - gps.fixT) / 1000; if (dt > 0.2) gps.acc = clamp((kmh - gps.kmh) / dt, -40, 25); }
+  estUpdate(kmh, now, avgDt);
   gps.kmh = kmh; gps.fixT = now; gps.status = 'ok';
+}
+/* Optional low-latency accelerometer (phones/tablets). Mounting is unknown, so the forward axis is learned
+   online by regressing device acceleration against the GPS-derived acceleration. Never required. */
+const imu = { u: [0, 0, 0], a: 0, n: 0, last: 0, events: 0 };
+function onMotion(e) {
+  const m = e.acceleration; if (!m || m.x == null) return;
+  const now = performance.now(), x = [m.x || 0, m.y || 0, m.z || 0]; imu.events++;
+  const fresh = est.v != null && now - gps.fixT < 3000;
+  if (fresh && est.v > 5 && Math.abs(est.a) > 2) {   // learn forward axis while clearly accelerating/braking
+    const target = est.a / 3.6, pred = imu.u[0] * x[0] + imu.u[1] * x[1] + imu.u[2] * x[2], err = target - pred, mu = 0.02;
+    for (let i = 0; i < 3; i++) imu.u[i] += mu * err * x[i];
+    imu.n = Math.min(400, imu.n + 1);
+  }
+  const ax = (imu.u[0] * x[0] + imu.u[1] * x[1] + imu.u[2] * x[2]) * 3.6;
+  imu.a += (ax - imu.a) * 0.12; imu.last = now;
+}
+function startImu() {
+  if (imu.started || typeof window.DeviceMotionEvent === 'undefined') return;
+  imu.started = true;
+  const add = () => window.addEventListener('devicemotion', onMotion);
+  try { if (typeof DeviceMotionEvent.requestPermission === 'function') DeviceMotionEvent.requestPermission().then(r => { if (r === 'granted') add(); }).catch(() => {}); else add(); } catch (e) {}
 }
 function onPosErr(e) {
   gps.status = e.code === 1 ? 'denied' : e.code === 2 ? 'unavailable' : 'timeout';
@@ -649,15 +710,21 @@ function startGps() {
 function stopGps() {
   if (gps.id != null) { try { navigator.geolocation.clearWatch(gps.id); } catch (e) {} }
   if (gps.simTimer) clearInterval(gps.simTimer);
-  gps.id = null; gps.simTimer = null; gps.kmh = null; gps.last = null; gps.acc = 0;
+  gps.id = null; gps.simTimer = null; gps.kmh = null; gps.last = null; gps.acc = 0; est.v = null; est.a = 0;
   if (gps.status !== 'denied') gps.status = 'off';
 }
-function gpsSpeedNow() {
-  if (gps.kmh == null) return null;
-  const age = (performance.now() - gps.fixT) / 1000;
-  if (age > 10) { if (gps.status === 'ok') gps.status = 'lost'; return null; }
-  return Math.max(0, gps.kmh + gps.acc * Math.min(age, 1.2));   // extrapolate between ~1 Hz fixes
+function gpsState() {
+  if (est.v == null) return null;
+  const now = performance.now(), age = (now - est.t) / 1000;
+  if ((now - gps.fixT) / 1000 > 10) { if (gps.status === 'ok') gps.status = 'lost'; return null; }
+  let a = est.a;
+  const imuOk = now - imu.last < 200 && imu.n > 60;
+  if (imuOk) a += Math.min(1, imu.n / 300) * 0.6 * (imu.a - a);   // accelerometer reacts within ~0.1 s
+  const h = age < 1 ? age : 1 + 0.5 * (1 - Math.exp(-(age - 1) * 2));   // extrapolate ~1 s, then taper
+  if (est.v === 0 && a <= 0) return { v: 0, a: 0, imu: imuOk };
+  return { v: Math.max(0, est.v + a * h), a, imu: imuOk };
 }
+function gpsSpeedNow() { const g = gpsState(); return g ? g.v : null; }
 // ?sim=1 – debug drive: fake 1 Hz fixes for 0 → 120 → 0 km/h (speed omitted on every other fix to exercise the fallback)
 function simProfile(t) {
   const k = [[0, 0], [3, 0], [13, 100], [23, 120], [33, 120], [41, 40], [48, 70], [58, 0], [64, 0]];
@@ -666,7 +733,7 @@ function simProfile(t) {
   return 0;
 }
 function startSimDrive() {
-  const t0 = performance.now(); let lat = 32.0853, lon = 34.7818, n = 0, lastT = t0;
+  const t0 = performance.now(); let lat = 32.0853, lon = 34.7818, n = 0, lastT = t0; gps.simT0 = t0;
   gps.status = 'waiting';
   const fire = () => {
     const now = performance.now(), t = (now - t0) / 1000, kmh = simProfile(t);
@@ -683,7 +750,7 @@ $('startBtn').addEventListener('click', () => {
   if (app.ctx && app.ctx.state !== 'running') app.ctx.resume();
   const sim = app.sim;
   if (sim.running || sim.cranking) { sim.command('off'); stopGps(); }
-  else { sim.sliderTarget = null; sim.command('start'); if ($('driveMode').checked) startGps(); }
+  else { sim.sliderTarget = null; sim.command('start'); if ($('driveMode').checked) { startGps(); startImu(); } }
 });
 
 function tick() {
@@ -691,7 +758,8 @@ function tick() {
   const sim = app.sim, h = 1 / 240;
   sim.driveMode = $('driveMode').checked;
   if (sim.driveMode && (sim.running || sim.cranking) && gps.status === 'off') startGps();
-  sim.driveSpeed = sim.driveMode ? gpsSpeedNow() : null;
+  const gs = sim.driveMode ? gpsState() : null;
+  sim.driveSpeed = gs ? gs.v : null; sim.driveAcc = gs ? gs.a : null;
   while (dt > 1e-6) { const s = Math.min(h, dt); sim.step(s); dt -= s; }
   if (app.eng) app.eng.apply(sim, app.ctx.currentTime + 0.025, 0.015);
 }
@@ -797,7 +865,7 @@ function draw() {
 }
 requestAnimationFrame(draw);
 
-window.Boxer6 = { PRESETS, Sim, Engine, renderDemo, encodeWav, app, gps };
+window.Boxer6 = { PRESETS, Sim, Engine, renderDemo, encodeWav, app, gps, est, imu, gpsState, simProfile };
 
 /* standalone build: no service worker */
 })();
