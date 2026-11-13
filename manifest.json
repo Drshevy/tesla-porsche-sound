@@ -1,7 +1,7 @@
 {
-  "name": "Flat-Six Sound – engine synthesizer for the Tesla browser",
-  "short_name": "Flat-Six Sound",
-  "description": "Real-time flat-six engine sound synthesizer inspired by the 911, for the cabin only. Not affiliated with Porsche or Tesla.",
+  "name": "Supercar Sound – engine synthesizer for the Tesla browser",
+  "short_name": "Supercar Sound",
+  "description": "Synthesized supercar engine sounds (11 cars) that follow your GPS speed. Offline, no samples.",
   "lang": "en",
   "dir": "ltr",
   "start_url": "./",

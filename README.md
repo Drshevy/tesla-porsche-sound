@@ -1,9 +1,9 @@
-# Flat-Six Sound – engine synthesizer for the Tesla in-car browser
+# Supercar Sound – engine synthesizer for the Tesla in-car browser
 
-A web app that synthesizes, in real time, the sound of a flat-six engine **inspired by** the Porsche 911 and plays it through the car's cabin speakers.
+A web app that synthesizes, in real time, the engine sound of 11 famous sports cars (**inspired by** – three Porsche 911s plus eight others) and plays it through the car's cabin speakers.
 It has no sound files, external libraries, CDNs or web fonts. Everything is generated with the Web Audio API.
 
-> Not affiliated with, endorsed or sponsored by Porsche AG or Tesla, Inc. Names are used descriptively only ("inspired by").
+> Not affiliated with, endorsed or sponsored by Porsche, Ferrari, Lamborghini, Ford, Chevrolet, Nissan, Mazda, Lexus, Mercedes-AMG or Tesla. No logos are used. Names are used descriptively only ("inspired by").
 
 ## Files
 | File | What it is |
@@ -13,7 +13,7 @@ It has no sound files, external libraries, CDNs or web fonts. Everything is gene
 | `manifest.json`, `icon.svg`, `icon-192.png`, `icon-512.png` | Web app manifest and icons |
 | `porsche-sound-standalone.html` | Single-file build with no service worker or extra files (also works opened locally) |
 | `build_standalone.py` | Rebuilds the standalone file from `index.html` |
-| `preview.png`, `preview-drive.png` | 1920x1200 screenshots (GPS off with action buttons, and Follow-speed mode at ~114 km/h) |
+| `preview.png`, `preview-drive.png`, `preview-eq.png` | 1920x1200 screenshots (GPS off, Follow-speed mode, Sound settings panel) |
 | `tesla-mockup.png` | Illustrative mockup of the app inside a Tesla-style browser (not a real Tesla screenshot) |
 | `preview.wav` | Offline-rendered demo (GT3, Turbo S, classic) |
 
@@ -40,15 +40,29 @@ The Tesla browser **cannot open local files or HTML from a USB drive**, so the f
 - You can open `porsche-sound-standalone.html` on a computer (even as a local file) to try the sound before uploading.
 
 ## Using it
-- **Character**: GT3 4.0 naturally aspirated (9,000 rpm redline), Turbo S twin-turbo (turbo whistle and blow-off valve), classic air-cooled 911 (cooling-fan whine, rasp and pops).
+- **Car** (scrollable card strip; tap a card, use ‹ › for more). Each car has its own cylinder count/firing pattern, idle, redline, gear ratios, induction and exhaust tuning:
+  | Card | Engine | Redline | Gears | Character |
+  |---|---|---|---|---|
+  | 911 GT3 4.0 | NA flat-six | 9,000 | 7 | high-rev flat-six howl, intake flap |
+  | 911 Turbo S | twin-turbo flat-six | 7,200 | 7 | turbo whistle, blow-off |
+  | Classic air-cooled 911 | air-cooled flat-six | 6,800 | 7 | fan whine, rasp, pops |
+  | Ferrari 812 | NA 65° V12 | 8,900 | 7 | smooth 12-cylinder scream |
+  | Lamborghini Huracán | NA 90° V10 | 8,500 | 7 | raspy odd-fire V10, heavy crackle |
+  | Ford Mustang GT | crossplane V8 | 7,500 | 10 | lumpy muscle-car burble |
+  | Chevrolet Corvette | pushrod V8 | 6,500 | 8 | deep low rumble |
+  | Nissan GT-R | twin-turbo V6 | 7,100 | 6 | spool, whistle, flutter |
+  | Mazda RX-7 | twin-rotor Wankel, turbo | 8,000 | 5 | buzzy "brap", pops |
+  | Lexus LFA | NA 72° V10 | 9,000 | 6 | F1-style shriek, fastest revving |
+  | Mercedes-AMG GT | biturbo crossplane V8 | 7,000 | 7 | hot-vee crackle and bang |
+- **Sound settings** (top right): 5-band equalizer (60 Hz, 250 Hz, 1 kHz, 4 kHz, 12 kHz, ±12 dB) with presets Flat, Bass boost, Exhaust, Cabin and Track; level sliders for Master, Exhaust, Intake, Turbo and Road/wind (0–150%). The selected car, EQ, levels and drive mode are saved in the browser (`localStorage`).
 - **ENGINE START / STOP**: big round button – starter crank, catch and settle to idle; press again for shutdown.
-- **Drive mode: Follow speed (GPS)** (on by default): the app reads your speed with `navigator.geolocation.watchPosition` (high accuracy; uses `coords.speed`, or computes speed from successive positions when it's missing), smooths it, and maps it to rpm through a simulated 7-speed PDK with per-preset ratios. Hard acceleration upshifts around 6,000–6,500 rpm, gentle cruising shifts early, slowing down downshifts (with rev-match blips) and stopping returns to idle. Accelerating adds load (more intake/exhaust and boost); coasting gives overrun crackle. The speedometer shows the GPS speed and the tach shows the gear (D1–D7). Status shows "Waiting for GPS…", "Location denied - idle", "GPS unavailable - idle", "GPS signal lost - idle" or "GPS off - idle"; without GPS the engine idles and the action buttons still work.
+- **Drive mode: Follow speed (GPS)** (on by default): the app reads your speed with `navigator.geolocation.watchPosition` (high accuracy; uses `coords.speed`, or computes speed from successive positions when it's missing), smooths it, and maps it to rpm through a simulated automatic/dual-clutch gearbox with per-car ratios and final drive. Hard acceleration upshifts around 6,000–6,500 rpm, gentle cruising shifts early, braking downshifts with rev-match blips that get sharper the harder you brake, adds overrun pops and a low engine-braking drone, and stopping returns to idle. Accelerating adds load (more intake/exhaust and boost); coasting gives overrun crackle. The speedometer shows the GPS speed and the tach shows the gear. Status shows "Waiting for GPS…", "Location denied - idle", "GPS unavailable - idle", "GPS signal lost - idle" or "GPS off - idle"; without GPS the engine idles and the action buttons still work.
 - **Debug drive**: add `?sim=1` to the URL to fake a 0 → 120 → 0 km/h drive.
 - **Buttons**: Idle, Rev blip, Rev to redline (into the limiter), Launch & upshifts, Downshift with blip, Overrun pops.
 - **Cluster**: center tachometer with shift lights, speedometer, and a boost gauge (Turbo) or oil temperature (other presets).
 
 ## How the sound is made
-- The firing frequency of a 4-stroke flat-six is rpm/60×3. The base oscillator is one full engine cycle (rpm/120) with a harmonic stack where the 6th harmonic is the firing frequency. Half-order, crank-order and bank-to-bank harmonics give the uneven flat-six character, plus a per-cycle amplitude lope.
+- The base oscillator is one full engine cycle (rpm/120) with a harmonic stack where harmonic N is the firing frequency (N = cylinders; 4 for the 2-rotor rotary). Half-order (crossplane/uneven header), crank-order and per-bank harmonics give each engine its character, plus a per-cycle amplitude lope.
 - Low-frequency random modulation adds small cycle-to-cycle pitch and level variation.
 - Exhaust: soft-clip waveshaper and resonant bandpass filters (one tracks rpm), split into left/right "tailpipes" with a slight path difference, plus a short synthetic cabin reflection (generated impulse response).
 - Intake: filtered noise that rises with throttle, modulated by the firing pulses, plus a high-harmonic induction howl with a resonance-flap boost above ~5,600 rpm on the GT3 preset.
@@ -56,6 +70,4 @@ The Tesla browser **cannot open local files or HTML from a USB drive**, so the f
 - Pops: short random noise bursts on lift-off, on upshifts and on the limiter. Subtle gearbox whine in gear.
 - Physics: rpm-dependent torque, friction, gear-dependent inertia, rev limiter, idle control, turbo lag.
 
-## ⚠️ Use responsibly
-Cabin only. Don't operate or look at the app while driving – use it parked, or let a passenger run it.
 Keep the volume reasonable, never mask the car's own warning sounds, and be considerate of people around you.
