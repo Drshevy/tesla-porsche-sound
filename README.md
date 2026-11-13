@@ -13,7 +13,7 @@ It has no sound files, external libraries, CDNs or web fonts. Everything is gene
 | `manifest.json`, `icon.svg`, `icon-192.png`, `icon-512.png` | Web app manifest and icons |
 | `porsche-sound-standalone.html` | Single-file build with no service worker or extra files (also works opened locally) |
 | `build_standalone.py` | Rebuilds the standalone file from `index.html` |
-| `preview.png`, `preview-drive.png` | 1920x1200 screenshots (manual mode, and Follow-speed mode at ~114 km/h) |
+| `preview.png`, `preview-drive.png` | 1920x1200 screenshots (GPS off with action buttons, and Follow-speed mode at ~114 km/h) |
 | `tesla-mockup.png` | Illustrative mockup of the app inside a Tesla-style browser (not a real Tesla screenshot) |
 | `preview.wav` | Offline-rendered demo (GT3, Turbo S, classic) |
 
@@ -31,7 +31,7 @@ The Tesla browser **cannot open local files or HTML from a USB drive**, so the f
 
 ### Notes on GPS
 - The Tesla browser supports location on recent software versions and asks for permission the first time; if it was refused, re-allow location for the site in the browser settings.
-- GPS updates about once per second, so the sound lags real speed changes by roughly 0.5–1.5 s (the app extrapolates between fixes to hide steps). In tunnels or parking garages the signal drops and the app falls back to manual control.
+- GPS updates about once per second, so the sound lags real speed changes by roughly 0.5–1.5 s (the app extrapolates between fixes to hide steps). In tunnels or parking garages the signal drops and the engine falls back to idle (action buttons still work).
 
 ### Important notes
 - The Tesla browser generally plays audio in Park. Some software versions also play it while driving, but this varies.
@@ -42,9 +42,8 @@ The Tesla browser **cannot open local files or HTML from a USB drive**, so the f
 ## Using it
 - **Character**: GT3 4.0 naturally aspirated (9,000 rpm redline), Turbo S twin-turbo (turbo whistle and blow-off valve), classic air-cooled 911 (cooling-fan whine, rasp and pops).
 - **ENGINE START / STOP**: big round button – starter crank, catch and settle to idle; press again for shutdown.
-- **Drive mode: Follow speed (GPS)** (on by default): the app reads your speed with `navigator.geolocation.watchPosition` (high accuracy; uses `coords.speed`, or computes speed from successive positions when it's missing), smooths it, and maps it to rpm through a simulated 7-speed PDK with per-preset ratios. Hard acceleration upshifts around 6,000–6,500 rpm, gentle cruising shifts early, slowing down downshifts (with rev-match blips) and stopping returns to idle. Accelerating adds load (more intake/exhaust and boost); coasting gives overrun crackle. The speedometer shows the GPS speed and the tach shows the gear (D1–D7). Status shows "Waiting for GPS…", "Location permission denied", "GPS unavailable" or "GPS signal lost" when relevant; without GPS the manual controls work as before.
+- **Drive mode: Follow speed (GPS)** (on by default): the app reads your speed with `navigator.geolocation.watchPosition` (high accuracy; uses `coords.speed`, or computes speed from successive positions when it's missing), smooths it, and maps it to rpm through a simulated 7-speed PDK with per-preset ratios. Hard acceleration upshifts around 6,000–6,500 rpm, gentle cruising shifts early, slowing down downshifts (with rev-match blips) and stopping returns to idle. Accelerating adds load (more intake/exhaust and boost); coasting gives overrun crackle. The speedometer shows the GPS speed and the tach shows the gear (D1–D7). Status shows "Waiting for GPS…", "Location denied - idle", "GPS unavailable - idle", "GPS signal lost - idle" or "GPS off - idle"; without GPS the engine idles and the action buttons still work.
 - **Debug drive**: add `?sim=1` to the URL to fake a 0 → 120 → 0 km/h drive.
-- **Rev pedal**: drag the slider from idle to redline. "Return to idle on release" snaps it back when you let go.
 - **Buttons**: Idle, Rev blip, Rev to redline (into the limiter), Launch & upshifts, Downshift with blip, Overrun pops.
 - **Cluster**: center tachometer with shift lights, speedometer, and a boost gauge (Turbo) or oil temperature (other presets).
 

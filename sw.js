@@ -1,5 +1,5 @@
 /* Service worker: caches the whole app for offline use after the first online load. */
-const CACHE = 'boxer6-v3-drive';
+const CACHE = 'boxer6-v4-noslider';
 const ASSETS = ['./', './index.html', './manifest.json', './icon.svg', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
