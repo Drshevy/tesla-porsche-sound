@@ -10,128 +10,116 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <!--PWA-END-->
 <style>
-:root{--bg:#08080a;--panel:#121216;--panel2:#1a1a20;--line:#2a2a32;--txt:#ececef;--dim:#9a9aa5;--red:#d5001c;--red2:#ff2a3d;--gold:#c9a45c;--ok:#2fbf71;--radius:16px}
+:root{--bg:#060607;--panel:#111114;--panel2:#18181d;--line:#25252c;--txt:#f1f1f4;--dim:#8d8d98;--red:#e0001f;--red2:#ff2d42;--gold:#d8b36a;--ok:#35d07f;--radius:20px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;background:var(--bg);color:var(--txt);
   font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-user-select:none;user-select:none;overflow:hidden}
-body{display:flex;flex-direction:column;padding:clamp(8px,1.2vh,18px) clamp(12px,1.4vw,28px);gap:clamp(8px,1vh,14px);
-  background:radial-gradient(ellipse at 50% -10%,#1d1d24 0,#08080a 60%)}
+body{display:flex;flex-direction:column;padding:clamp(10px,1.4vh,20px) clamp(14px,1.5vw,30px);gap:clamp(10px,1.3vh,18px);
+  background:radial-gradient(ellipse 80% 60% at 50% 38%,#17171d 0,#060607 70%)}
 button{font:inherit;color:inherit}
-header{display:flex;align-items:center;gap:16px}
-h1{margin:0;font-size:clamp(20px,1.8vw,34px);font-weight:800;letter-spacing:.06em;white-space:nowrap;text-transform:uppercase}
+header{display:flex;align-items:center;gap:clamp(10px,1vw,18px);flex:none}
+.brand{display:flex;align-items:baseline;gap:14px;white-space:nowrap}
+h1{margin:0;font-size:clamp(22px,1.9vw,36px);font-weight:900;letter-spacing:.14em;text-transform:uppercase}
 h1 span{color:var(--red2)}
+.brand small{font-size:clamp(12px,.85vw,16px);color:var(--dim);letter-spacing:.2em;text-transform:uppercase}
 .spacer{flex:1}
-.setbtn{min-height:clamp(56px,6.4vh,80px);padding:0 22px;border-radius:var(--radius);border:2px solid var(--line);background:var(--panel);font-size:clamp(15px,1.05vw,20px);font-weight:700;cursor:pointer;white-space:nowrap}
-.setbtn:active{border-color:var(--red)}
-.cars{display:flex;align-items:stretch;gap:10px;flex:none}
-.arrow{flex:none;width:clamp(48px,3.4vw,64px);border-radius:var(--radius);border:2px solid var(--line);background:var(--panel);font-size:40px;line-height:1;cursor:pointer}
-.strip{flex:1;display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;padding:2px}
-.strip::-webkit-scrollbar{display:none}
-.car{flex:0 0 clamp(230px,15.2vw,300px);scroll-snap-align:start;min-height:clamp(96px,10.5vh,128px);text-align:left;padding:10px 14px 10px 16px;border-radius:18px;border:2px solid var(--line);cursor:pointer;position:relative;overflow:hidden;
-  background:linear-gradient(135deg,#1c1c22 0%,#121216 60%,#0d0d10 100%);display:flex;flex-direction:column;justify-content:space-between;gap:4px;transition:border-color .15s,transform .08s}
-.car:active{transform:scale(.98)}
-.car:after{content:"";position:absolute;right:-30px;top:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,#ffffff0d,transparent 70%)}
-.car .ib{font-size:clamp(10px,.68vw,13px);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
-.car .nm{font-size:clamp(16px,1.12vw,22px);font-weight:800;line-height:1.15}
-.car .sp{font-size:clamp(11px,.78vw,15px);color:#c9c9d1}
-.car .ft{display:flex;justify-content:space-between;align-items:center;font-size:clamp(11px,.75vw,14px);color:var(--dim)}
-.car .tg{font-weight:800;color:#fff;background:#2b2b33;border-radius:8px;padding:2px 8px;letter-spacing:.05em}
-.car[aria-selected="true"]{border-color:var(--red);background:linear-gradient(135deg,#3a0b14 0%,#1a080c 65%,#100609 100%);box-shadow:0 0 24px #d5001c33}
-.car[aria-selected="true"] .tg{background:var(--red)}
-.sheet{position:fixed;inset:0;background:#000a;z-index:20;display:flex;justify-content:flex-end}
-.sheet .panel{width:min(760px,96vw);height:100%;overflow:auto;background:#101014;border-left:2px solid var(--line);padding:clamp(16px,2vh,28px) clamp(18px,1.6vw,32px);box-shadow:-20px 0 60px #000c}
-.ph{display:flex;align-items:center;justify-content:space-between}
-.ph h2{margin:0;font-size:clamp(22px,1.7vw,32px)}
-.close{width:64px;height:64px;border-radius:50%;border:2px solid var(--line);background:var(--panel);font-size:26px;cursor:pointer}
-.sheet h3{margin:22px 0 10px;font-size:clamp(15px,1.05vw,20px);color:var(--dim);text-transform:uppercase;letter-spacing:.12em}
-.eqp{display:flex;gap:10px;flex-wrap:wrap}
-.eqp button,.ghost{min-height:56px;padding:0 20px;border-radius:14px;border:2px solid var(--line);background:var(--panel2);font-size:clamp(14px,1vw,19px);font-weight:700;cursor:pointer}
-.eqp button[aria-pressed="true"]{border-color:var(--red);background:#2a0a10}
-.bands,.levels{display:flex;flex-direction:column;gap:6px;margin-top:12px}
-.rowc{display:grid;grid-template-columns:120px 1fr 90px;align-items:center;gap:14px;min-height:58px}
-.rowc label{font-size:clamp(14px,1vw,19px);font-weight:700}
-.rowc output{text-align:right;font-variant-numeric:tabular-nums;color:#ddd;font-size:clamp(14px,1vw,18px)}
-.rowc input{height:48px}
-.rowc input::-webkit-slider-runnable-track{height:10px;border-radius:5px;background:linear-gradient(90deg,#33333c,#4a4a55)}
-.rowc input::-webkit-slider-thumb{-webkit-appearance:none;width:40px;height:40px;margin-top:-15px;border-radius:50%;background:#e9e9ee;border:3px solid var(--red)}
-.row-end{display:flex;justify-content:flex-end;margin-top:18px}
-.hidden{display:none!important}
-.vol{display:flex;align-items:center;gap:10px;background:var(--panel);border:2px solid var(--line);border-radius:var(--radius);padding:8px 16px;min-height:clamp(56px,6.4vh,80px)}
-.vol label{font-size:clamp(14px,1vw,19px)}
-.vol input{width:clamp(140px,11vw,230px)}
-.vol output{min-width:3.2em;text-align:center;font-variant-numeric:tabular-nums}
-.cluster{flex:1.25;min-height:0;position:relative;border-radius:28px;border:2px solid #24242b;
-  background:linear-gradient(180deg,#141418,#0a0a0c);box-shadow:inset 0 2px 0 #ffffff10,inset 0 -20px 60px #000a,0 10px 40px #0008;overflow:hidden}
-.cluster:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,#ffffff03 0 2px,transparent 2px 5px);pointer-events:none}
-#tach{width:100%;height:100%;display:block;position:relative}
-.status{position:absolute;top:12px;left:18px;font-size:clamp(12px,.9vw,17px);color:var(--dim);z-index:1}
-.status i{display:inline-block;width:.7em;height:.7em;border-radius:50%;background:#555;margin-right:6px;vertical-align:middle}
-.status.on i{background:var(--ok);box-shadow:0 0 10px var(--ok)}
-.status.crank i{background:var(--gold)}
-.controls{display:flex;gap:clamp(10px,1vw,18px);flex:.85;min-height:0;align-items:stretch}
-.controls .grid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:1fr;gap:clamp(8px,.8vw,14px);min-width:0}
-.startstop{flex:none;align-self:center;width:clamp(170px,22vh,250px);height:clamp(170px,22vh,250px);border-radius:50%;cursor:pointer;touch-action:manipulation;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#f2f2f4;
-  background:radial-gradient(circle at 50% 35%,#2b2b31 0,#111114 55%,#050506 100%);
-  border:clamp(8px,1vh,12px) solid #b9b9c2;box-shadow:0 0 0 3px #3a3a42,0 0 0 7px #111,inset 0 6px 14px #ffffff14,inset 0 -10px 24px #000c,0 12px 30px #000a;transition:transform .08s,box-shadow .2s}
-.startstop:active{transform:scale(.96)}
-.startstop .ss-top,.startstop .ss-bot{font-size:clamp(13px,1.5vh,18px);letter-spacing:.3em;color:#a8a8b2;font-weight:700}
-.startstop .ss-main{font-size:clamp(34px,4.6vh,54px);font-weight:900;letter-spacing:.08em}
-.startstop[aria-pressed="true"]{box-shadow:0 0 0 3px #d5001c,0 0 0 7px #111,0 0 40px #ff2a3d88,inset 0 6px 14px #ffffff14,inset 0 -10px 24px #000c}
-.startstop[aria-pressed="true"] .ss-main{color:#ff2a3d}
-.drive{display:flex;flex-direction:column;gap:4px;justify-content:center;background:var(--panel);border:2px solid var(--line);border-radius:var(--radius);padding:6px 16px;min-height:clamp(56px,6.4vh,80px)}
-.switch{display:flex;align-items:center;gap:12px;cursor:pointer;font-size:clamp(13px,.95vw,18px);line-height:1.2}
+.chip{display:flex;align-items:center;gap:10px;min-height:clamp(60px,6.6vh,80px);padding:0 18px;border-radius:999px;background:var(--panel);border:1.5px solid var(--line)}
+.gps{font-size:clamp(14px,.95vw,18px);color:var(--dim);font-variant-numeric:tabular-nums;white-space:nowrap}
+.gps:before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:#55555f;margin-right:10px;vertical-align:1px}
+.gps.ok{color:#9ff0c2}.gps.ok:before{background:var(--ok);box-shadow:0 0 10px var(--ok)}
+.switch{display:flex;align-items:center;gap:12px;cursor:pointer;font-size:clamp(14px,.95vw,18px);font-weight:700;white-space:nowrap}
 .switch input{position:absolute;opacity:0;width:1px;height:1px}
-.switch .knob{width:72px;height:40px;border-radius:20px;background:#33333c;position:relative;flex:none;transition:background .15s}
-.switch .knob:after{content:"";position:absolute;top:4px;left:4px;width:32px;height:32px;border-radius:50%;background:#e9e9ee;transition:left .15s}
+.switch .knob{width:76px;height:42px;border-radius:21px;background:#2c2c34;position:relative;flex:none;transition:background .2s}
+.switch .knob:after{content:"";position:absolute;top:4px;left:4px;width:34px;height:34px;border-radius:50%;background:#f1f1f4;transition:left .22s cubic-bezier(.3,1.4,.5,1);box-shadow:0 2px 6px #0008}
 .switch input:checked+.knob{background:var(--red)}
-.switch input:checked+.knob:after{left:36px}
-.gps{font-size:clamp(13px,.9vw,17px);color:var(--dim);font-variant-numeric:tabular-nums}
-.gps.ok{color:#7ee0a5}
-.btn{background:linear-gradient(180deg,var(--panel2),var(--panel));border:2px solid var(--line);border-radius:var(--radius);
-  font-size:clamp(17px,1.3vw,27px);font-weight:700;padding:6px 12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:60px;touch-action:manipulation;transition:transform .06s,border-color .15s}
-.btn small{font-size:clamp(11px,.75vw,15px);font-weight:500;color:var(--dim)}
-.btn:active{transform:scale(.97);border-color:var(--red)}
-.btn.start{border-color:#1f6b45;background:linear-gradient(180deg,#123222,#0b1a12)}
-.btn.off{border-color:#6b1f28;background:linear-gradient(180deg,#32121a,#1a0b0e)}
-.btn.active{border-color:var(--red2);box-shadow:0 0 0 2px var(--red) inset}
-input[type=range]{-webkit-appearance:none;appearance:none;width:100%;background:transparent;margin:0;touch-action:none}
+.switch input:checked+.knob:after{left:38px}
+.setbtn{min-height:clamp(60px,6.6vh,80px);padding:0 26px;border-radius:999px;border:1.5px solid var(--line);background:var(--panel);font-size:clamp(15px,1.05vw,20px);font-weight:800;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:10px;transition:border-color .15s,transform .08s}
+.setbtn svg{width:24px;height:24px}
+.setbtn:active{transform:scale(.97);border-color:var(--red)}
+.cluster{flex:1;min-height:0;position:relative;border-radius:32px;border:1.5px solid #1f1f26;
+  background:radial-gradient(ellipse 60% 85% at 50% 55%,#131318 0,#0a0a0c 65%,#070708 100%);box-shadow:inset 0 1px 0 #ffffff12,inset 0 -30px 80px #000c,0 18px 50px #000a;overflow:hidden}
+#tach{width:100%;height:100%;display:block;position:relative}
+.status{position:absolute;top:16px;left:22px;font-size:clamp(13px,.9vw,17px);color:var(--dim);z-index:1;letter-spacing:.04em}
+.status i{display:inline-block;width:.7em;height:.7em;border-radius:50%;background:#55555f;margin-right:8px;vertical-align:middle;transition:background .2s}
+.status.on i{background:var(--ok);box-shadow:0 0 10px var(--ok)}
+.status.crank i{background:var(--gold);box-shadow:0 0 10px var(--gold)}
+.dock{display:flex;gap:clamp(12px,1.1vw,20px);align-items:center;flex:none;height:clamp(150px,17vh,210px)}
+.startstop{flex:none;width:clamp(150px,17vh,205px);height:clamp(150px,17vh,205px);border-radius:50%;cursor:pointer;touch-action:manipulation;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#f2f2f4;position:relative;
+  background:radial-gradient(circle at 50% 32%,#2e2e35 0,#121215 55%,#060607 100%);
+  border:clamp(7px,.9vh,10px) solid #c3c3cc;box-shadow:0 0 0 3px #34343c,0 0 0 8px #0d0d10,inset 0 6px 14px #ffffff18,inset 0 -10px 24px #000c,0 14px 34px #000b;transition:transform .1s,box-shadow .3s}
+.startstop:active{transform:scale(.95)}
+.startstop .ss-top,.startstop .ss-bot{font-size:clamp(12px,1.35vh,16px);letter-spacing:.32em;color:#a2a2ad;font-weight:800}
+.startstop .ss-main{font-size:clamp(30px,4vh,48px);font-weight:900;letter-spacing:.08em;transition:color .2s}
+.startstop[aria-pressed="false"]{animation:breathe 2.6s ease-in-out infinite}
+@keyframes breathe{50%{box-shadow:0 0 0 3px #5a1018,0 0 0 8px #0d0d10,0 0 26px #ff2a3d44,inset 0 6px 14px #ffffff18,inset 0 -10px 24px #000c,0 14px 34px #000b}}
+.startstop[aria-pressed="true"]{box-shadow:0 0 0 3px var(--red),0 0 0 8px #0d0d10,0 0 46px #ff2a3d99,inset 0 6px 14px #ffffff18,inset 0 -10px 24px #000c}
+.startstop[aria-pressed="true"] .ss-main{color:var(--red2);text-shadow:0 0 18px #ff2a3d88}
+.cars{flex:1;min-width:0;display:flex;align-items:stretch;gap:10px;height:100%}
+.arrow{flex:none;width:clamp(54px,3.6vw,70px);border-radius:var(--radius);border:1.5px solid var(--line);background:var(--panel);font-size:42px;line-height:1;cursor:pointer;color:#cfcfd6;transition:transform .08s}
+.arrow:active{transform:scale(.94)}
+.strip{flex:1;display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;padding:2px;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 18px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 18px),transparent 100%)}
+.strip::-webkit-scrollbar{display:none}
+.car{flex:0 0 clamp(230px,14.6vw,290px);scroll-snap-align:start;text-align:left;padding:14px 16px;border-radius:var(--radius);border:1.5px solid var(--line);cursor:pointer;position:relative;overflow:hidden;
+  background:linear-gradient(150deg,#1b1b21 0%,#111114 55%,#0b0b0d 100%);display:flex;flex-direction:column;justify-content:space-between;gap:4px;transition:border-color .2s,transform .1s,box-shadow .3s,background .3s}
+.car:active{transform:scale(.97)}
+.car:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:transparent;transition:background .2s}
+.car .ib{font-size:clamp(10px,.66vw,13px);letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.car .nm{font-size:clamp(17px,1.15vw,23px);font-weight:850;line-height:1.12}
+.car .sp{font-size:clamp(12px,.8vw,15px);color:#c4c4cc}
+.car .ft{display:flex;justify-content:space-between;align-items:center;font-size:clamp(11px,.74vw,14px);color:var(--dim)}
+.car .tg{font-weight:900;color:#fff;background:#2a2a32;border-radius:8px;padding:3px 9px;letter-spacing:.06em}
+.car[aria-selected="true"]{border-color:#ff2d4288;background:linear-gradient(150deg,#3b0b14 0%,#1b080c 60%,#0f0608 100%);box-shadow:0 0 30px #e0001f33,inset 0 1px 0 #ffffff14}
+.car[aria-selected="true"]:before{background:var(--red2);box-shadow:0 0 12px var(--red2)}
+.car[aria-selected="true"] .tg{background:var(--red)}
+.volbox{flex:none;width:clamp(220px,14vw,280px);height:100%;display:flex;flex-direction:column;justify-content:center;gap:12px;padding:0 20px;border-radius:var(--radius);background:var(--panel);border:1.5px solid var(--line)}
+.volbox .vl{display:flex;justify-content:space-between;font-size:clamp(13px,.9vw,17px);color:var(--dim);letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+.volbox output{color:var(--txt);font-variant-numeric:tabular-nums;letter-spacing:0}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;background:transparent;margin:0;touch-action:none;height:48px}
 input[type=range]:focus{outline:none}
-.vol input::-webkit-slider-runnable-track{height:12px;border-radius:6px;background:#33333c}
-.vol input::-webkit-slider-thumb{-webkit-appearance:none;width:36px;height:36px;margin-top:-12px;border-radius:50%;background:#e9e9ee;border:3px solid var(--red)}
-@media (max-width:1100px){html,body{overflow:auto}.setbtn{min-height:56px}.controls .grid{grid-template-columns:1fr 1fr}.cluster{min-height:320px}header{flex-wrap:wrap}}
+input[type=range]::-webkit-slider-runnable-track{height:10px;border-radius:5px;background:linear-gradient(90deg,var(--red) var(--fill,50%),#2e2e36 var(--fill,50%))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:42px;height:42px;margin-top:-16px;border-radius:50%;background:radial-gradient(circle at 50% 35%,#fff,#cfcfd6);border:0;box-shadow:0 3px 10px #000a,0 0 0 4px #ffffff10}
+.sheet{position:fixed;inset:0;background:#000b;z-index:20;display:flex;justify-content:flex-end;animation:fade .2s ease}
+.sheet .panel{width:min(780px,96vw);height:100%;overflow:auto;background:linear-gradient(180deg,#121216,#0b0b0e);border-left:1.5px solid var(--line);padding:clamp(18px,2.2vh,30px) clamp(20px,1.8vw,36px);box-shadow:-24px 0 70px #000d;animation:slide .26s cubic-bezier(.2,.9,.3,1)}
+@keyframes fade{from{opacity:0}}@keyframes slide{from{transform:translateX(40px);opacity:.4}}
+.ph{display:flex;align-items:center;justify-content:space-between}
+.ph h2{margin:0;font-size:clamp(24px,1.8vw,34px);letter-spacing:.02em}
+.close{width:68px;height:68px;border-radius:50%;border:1.5px solid var(--line);background:var(--panel);font-size:26px;cursor:pointer}
+.sheet h3{margin:24px 0 10px;font-size:clamp(14px,.95vw,18px);color:var(--dim);text-transform:uppercase;letter-spacing:.18em}
+.eqp{display:flex;gap:10px;flex-wrap:wrap}
+.eqp button,.ghost{min-height:60px;padding:0 22px;border-radius:999px;border:1.5px solid var(--line);background:var(--panel2);font-size:clamp(14px,1vw,19px);font-weight:800;cursor:pointer;transition:border-color .15s,background .15s}
+.eqp button[aria-pressed="true"]{border-color:var(--red2);background:#2c0a11;box-shadow:0 0 16px #e0001f33}
+.bands,.levels{display:flex;flex-direction:column;gap:4px;margin-top:10px}
+.rowc{display:grid;grid-template-columns:130px 1fr 90px;align-items:center;gap:16px;min-height:60px}
+.rowc label{font-size:clamp(14px,1vw,19px);font-weight:750}
+.rowc output{text-align:right;font-variant-numeric:tabular-nums;color:#ddd;font-size:clamp(14px,1vw,18px)}
+.row-end{display:flex;justify-content:flex-end;margin-top:20px}
+.hidden{display:none!important}
+@media (max-width:1100px){html,body{overflow:auto}header{flex-wrap:wrap}.cluster{min-height:340px;flex:none;height:56vh}.dock{flex-wrap:wrap;height:auto}.cars{height:140px;flex-basis:100%;order:3}.volbox{height:120px}}
 </style>
 </head>
 <body>
 <header>
-  <h1>Supercar <span>Sound</span></h1>
+  <div class="brand"><h1>Supercar <span>Sound</span></h1><small>Engine synthesizer</small></div>
   <div class="spacer"></div>
-  <div class="vol"><label for="vol">Volume</label><input type="range" id="vol" min="0" max="100" value="70"><output id="volOut">70%</output></div>
-  <div class="drive">
-    <label class="switch"><input type="checkbox" id="driveMode" checked><span class="knob"></span><span class="sw-lbl">Drive mode:<br><b>Follow speed (GPS)</b></span></label>
-    <div class="gps" id="gpsStatus">GPS off - idle</div>
-  </div>
-  <button class="setbtn" id="openEq" aria-label="Sound settings">🎚 Sound settings</button>
+  <div class="chip"><div class="gps" id="gpsStatus">GPS off - idle</div></div>
+  <div class="chip"><label class="switch"><input type="checkbox" id="driveMode" checked><span class="knob"></span><span class="sw-lbl">Follow speed (GPS)</span></label></div>
+  <button class="setbtn" id="fsBtn" aria-label="Full screen">⛶</button>
+  <button class="setbtn" id="openEq" aria-label="Sound settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>Sound settings</button>
 </header>
-<section class="cars">
-  <button class="arrow" id="carPrev" aria-label="Previous cars">‹</button>
-  <div class="strip" id="presets" role="listbox" aria-label="Car"></div>
-  <button class="arrow" id="carNext" aria-label="More cars">›</button>
-</section>
 <section class="cluster">
   <div class="status" id="status"><i></i><span id="statusTxt">Engine off</span></div>
   <canvas id="tach" aria-label="Instrument cluster"></canvas>
 </section>
-<section class="controls" id="controls">
+<section class="dock" id="controls">
   <button id="startBtn" class="startstop" aria-pressed="false" aria-label="Engine start / stop"><span class="ss-top">ENGINE</span><span class="ss-main" id="ssMain">START</span><span class="ss-bot" id="ssBot">STOP</span></button>
-  <div class="grid">
-    <button class="btn" data-cmd="idle">Idle<small>Lift off, back to idle</small></button>
-    <button class="btn" data-cmd="blip">Rev blip<small>Quick stab of throttle</small></button>
-    <button class="btn" data-cmd="redline">Rev to redline<small>Full throttle into the limiter</small></button>
-    <button class="btn" data-cmd="launch">Launch &amp; upshifts<small>Accelerate through the gears</small></button>
-    <button class="btn" data-cmd="downshift">Downshift<small>With throttle blip (rev-match)</small></button>
-    <button class="btn" data-cmd="pops">Overrun pops<small>Crackles on lift-off</small></button>
+  <div class="cars">
+    <button class="arrow" id="carPrev" aria-label="Previous cars">‹</button>
+    <div class="strip" id="presets" role="listbox" aria-label="Car"></div>
+    <button class="arrow" id="carNext" aria-label="More cars">›</button>
   </div>
+  <div class="volbox"><div class="vl"><label for="vol">Volume</label><output id="volOut">70%</output></div><input type="range" id="vol" min="0" max="100" value="70"></div>
 </section>
 <div class="sheet hidden" id="eqSheet" role="dialog" aria-label="Sound settings">
   <div class="panel">
@@ -280,6 +268,22 @@ for (const p of Object.values(PRESETS)) {   // shared defaults
   if (p.topGear == null) p.topGear = 4;
   if (p.gearK == null) p.gearK = 14;
 }
+/* exhaust pop / burble character: tone = brightness (Hz), thump = body (Hz), pipe = tailpipe resonance (Hz),
+   bang = chance of a big bang on a hard upshift, tail = pipe reverb, burble = overrun gurgle level, lvl = pop level */
+const POP = {
+  gt3:     { tone: 3600, thump: 92,  pipe: 420, bang: 0.12, tail: 0.32, burble: 0.5, lvl: 0.42 },
+  turbo:   { tone: 2100, thump: 72,  pipe: 300, bang: 0.2,  tail: 0.28, burble: 0.45, lvl: 0.3 },
+  classic: { tone: 2900, thump: 84,  pipe: 360, bang: 0.08, tail: 0.36, burble: 0.65, lvl: 0.42 },
+  v12:     { tone: 3900, thump: 105, pipe: 520, bang: 0.08, tail: 0.32, burble: 0.35, lvl: 0.32 },
+  v10l:    { tone: 3300, thump: 88,  pipe: 400, bang: 0.25, tail: 0.4,  burble: 0.6, lvl: 0.48 },
+  mustang: { tone: 1900, thump: 62,  pipe: 250, bang: 0.12, tail: 0.34, burble: 0.8, lvl: 0.42 },
+  vette:   { tone: 1700, thump: 56,  pipe: 220, bang: 0.12, tail: 0.34, burble: 0.85, lvl: 0.4 },
+  gtr:     { tone: 2300, thump: 78,  pipe: 330, bang: 0.22, tail: 0.28, burble: 0.45, lvl: 0.34 },
+  rotary:  { tone: 3100, thump: 82,  pipe: 450, bang: 0.3,  tail: 0.38, burble: 0.55, lvl: 0.5 },
+  lfa:     { tone: 4100, thump: 100, pipe: 560, bang: 0.08, tail: 0.32, burble: 0.35, lvl: 0.3 },
+  amg:     { tone: 2200, thump: 60,  pipe: 280, bang: 0.32, tail: 0.45, burble: 0.85, lvl: 0.5 }
+};
+for (const k of Object.keys(PRESETS)) PRESETS[k].pop = POP[k];
 
 /* ---------- Physics-ish engine/driveline simulation ---------- */
 class Sim {
@@ -287,7 +291,7 @@ class Sim {
   reset() {
     Object.assign(this, { rpm: 0, running: false, cranking: false, thr: 0, load: 0, gear: 0, boost: 0, fuelCut: false,
       coldExtra: 0, overrun: 0, crackleBoost: 1, shift: null, brake: 0, prog: null, sliderTarget: null,
-      events: [], prevIntent: 0, t: 0, speed: 0, oil: 38,
+      events: [], prevIntent: 0, t: 0, speed: 0, oil: 38, burble: 0, overAge: 0,
       driveMode: false, driveSpeed: null, driveAcc: null, jerk: 0, dl: 0, drone: 0, brakeI: 0, vs: 0, vPrev: 0, acc: 0, dGear: 1, lastShift: -9, drive: false, driveTarget: 0 });
   }
   setPreset(p) { this.p = p; if (this.rpm > p.limiter) this.rpm = p.limiter - 200; if (this.gear >= p.ratios.length) this.gear = p.ratios.length - 1; }
@@ -304,7 +308,7 @@ class Sim {
     if (this.shift || to < 1 || to >= R.length || !this.gear) return false;
     const target = Math.min(this.rpm * R[to] / R[this.gear], this.p.limiter - 150);
     this.shift = { to, dir, t: 0, dur: dir > 0 ? 0.09 : 0.2, target };
-    if (dir > 0) { this.events.push({ type: 'shiftCrack' }); if (this.p.turbo && this.boost > 0.4) this.events.push({ type: 'bov', amt: this.boost * 0.45 }); }
+    if (dir > 0) { this.events.push({ type: 'shiftCrack', hard: this.thr > 0.8 }); if (this.p.turbo && this.boost > 0.4) this.events.push({ type: 'bov', amt: this.boost * 0.45 }); }
     return true;
   }
   /* ---- Follow-speed mode: road speed (km/h) -> simulated 7-speed PDK -> rpm + load ---- */
@@ -347,7 +351,7 @@ class Sim {
         if (to) {
           const dir = to > this.dGear ? 1 : -1;
           this.shift = { to, dir, t: 0, dur: dir > 0 ? 0.08 + (1 - load) * 0.1 : 0.16 + 0.06 * bi, target: this.rpmAtGear(to, v), drive: true, blip: dir < 0 ? 0.35 + 0.55 * bi : 0 };
-          if (dir > 0 && load > 0.55) { this.events.push({ type: 'shiftCrack' }); if (p.turbo && this.boost > 0.5) this.events.push({ type: 'bov', amt: this.boost * 0.4 }); }
+          if (dir > 0 && load > 0.55) { this.events.push({ type: 'shiftCrack', hard: load > 0.85 }); if (p.turbo && this.boost > 0.5) this.events.push({ type: 'bov', amt: this.boost * 0.4 }); }
           this.dGear = to; this.lastShift = this.t;
         }
       }
@@ -421,7 +425,8 @@ class Sim {
     const pt = this.runProgram(dt); if (pt != null) cmd = pt;
     const drive = this.driveActive();
     if (drive) cmd = this.driveCalc(dt);
-    else if (this.drive) { this.gear = 0; this.shift = null; this.drone = 0; }     // leaving drive mode
+    else if (this.drive) { this.gear = 0; this.shift = null; this.drone = 0; }
+    if (!this.running) this.burble = 0;     // leaving drive mode
     this.drive = drive;
     this.coldExtra *= Math.exp(-dt / 6);
     const idleT = p.idle + this.coldExtra;
@@ -430,7 +435,7 @@ class Sim {
     let eff = intent;
     if (this.rpm >= p.limiter) this.fuelCut = true;
     if (this.fuelCut && this.rpm < p.limiter - 230) this.fuelCut = false;
-    if (this.fuelCut) { eff = 0; this.thr = Math.min(this.thr, 0.05); if (Math.random() < 14 * p.crackle * dt) this.events.push({ type: 'crackle', s: 0.3 + 0.4 * Math.random() }); }
+    if (this.fuelCut) { eff = 0; this.thr = Math.min(this.thr, 0.05); if (Math.random() < 5 * p.crackle * dt) this.events.push({ type: 'crackle', s: 0.25 + 0.3 * Math.random() }); }
     if (this.shift) eff = this.shift.dir > 0 ? 0 : (this.shift.blip ? this.shift.blip : 0.65);
     // overrun detection on driver lift (not on shift/limiter cuts)
     if (this.running && !this.shift && this.prevIntent > 0.2 && intent < 0.08 && this.rpm > 3000) {
@@ -449,7 +454,7 @@ class Sim {
       if (this.shift) {
         const s = this.shift; s.t += dt; s.target = this.rpmAtGear(s.to, this.vs);
         this.rpm += (s.target - this.rpm) * (1 - Math.exp(-dt / (s.dir > 0 ? 0.03 : 0.05)));
-        if (s.t >= s.dur) { this.gear = s.to; this.shift = null; if (s.dir < 0 && this.driveLoad < 0.2) { this.overrun = Math.max(this.overrun, p.crackleTime * (0.5 + 0.8 * this.brakeI)); if (this.brakeI > 0.35) this.events.push({ type: 'crackle', s: 0.6 + 0.4 * this.brakeI }); } }
+        if (s.t >= s.dur) { this.gear = s.to; this.shift = null; if (s.dir < 0 && this.driveLoad < 0.2) { this.overrun = Math.max(this.overrun, p.crackleTime * (0.5 + 0.8 * this.brakeI)); if (this.brakeI > 0.35 && Math.random() < 0.6) this.events.push({ type: 'burst', s: 0.45 + 0.35 * this.brakeI, n: 1 + Math.floor(Math.random() * 2.5) }); } }
       } else { this.gear = this.dGear; this.rpm += (this.driveTarget - this.rpm) * (1 - Math.exp(-dt / 0.12)); }
     } else if (this.shift) {
       const s = this.shift; s.t += dt;
@@ -470,12 +475,22 @@ class Sim {
     else this.speed = Math.max(0, this.speed - (1.5 + this.brake * 30) * dt * (this.speed > 0 ? 1 : 0));
     if (this.running) this.oil += (92 + 12 * this.load - this.oil) * dt / 40; else this.oil += (38 - this.oil) * dt / 300;
     // overrun crackles
+    // overrun: sparse, irregular, decaying bursts that start a beat after the lift (real unburnt fuel lights in the pipe),
+    // plus a continuous low burble that cross-fades in as the combustion tone backs off
+    const ovOn = this.overrun > 0 && this.running && this.thr < 0.2 && this.rpm > 1800;
     if (this.overrun > 0) {
-      this.overrun -= dt;
-      const rate = 30 * p.crackle * this.crackleBoost * Math.pow(Math.max(0, this.overrun) / p.crackleTime, 0.7);
-      if (this.running && this.rpm > 2000 && this.thr < 0.2 && Math.random() < rate * dt)
-        this.events.push({ type: 'crackle', s: 0.35 + 0.65 * Math.random() });
-    }
+      this.overAge += dt; this.overrun -= dt;
+      const env = Math.pow(Math.max(0, this.overrun) / p.crackleTime, 0.8), onset = smooth(0.1, 0.45, this.overAge);
+      const rate = 2.6 * Math.pow(p.crackle, 0.7) * Math.min(1.6, this.crackleBoost) * env * onset;     // bursts per second
+      this.burstCool = (this.burstCool || 0) - dt;
+      if (ovOn && this.burstCool <= 0 && Math.random() < rate * dt) {
+        this.burstCool = 0.22 + Math.random() * 0.35;   // a breath between clusters: no machine-gun trains
+        const rr = Math.min(1, this.rpm / p.redline * 1.3);
+        this.events.push({ type: 'burst', s: (0.4 + 0.6 * Math.random()) * (0.45 + 0.55 * rr) * (0.35 + 0.65 * env), n: 1 + Math.floor(Math.random() * Math.random() * 3.6) });
+      }
+    } else this.overAge = 0;
+    const bT = ovOn ? (0.35 + 0.65 * Math.pow(Math.max(0, this.overrun) / p.crackleTime, 0.6)) * clamp(this.rpm / p.redline * 1.4, 0.2, 1) * smooth(0.05, 0.35, this.overAge) : 0;
+    this.burble += (bT - this.burble) * (1 - Math.exp(-dt / (bT > this.burble ? 0.2 : 0.55)));
   }
   get statusKey() { return this.cranking ? 'crank' : this.running ? 'on' : (this.rpm > 0 ? 'stopping' : 'off'); }
 }
@@ -523,8 +538,8 @@ class Engine {
     hp.connect(body1); body1.connect(body2); body2.connect(comp);
     this.bus = G(0.9); this.bus.connect(hp);
     // user level groups (exhaust / intake / turbo / road+wind)
-    this.lv = { exhaust: 1, intake: 1, turbo: 1, road: 1 };
-    this.grp = { exhaust: G(1), intake: G(1), turbo: G(1), road: G(1) };
+    this.lv = { exhaust: 1, intake: 1, turbo: 1, road: 1, crackles: 1 };
+    this.grp = { exhaust: G(1), intake: G(1), turbo: G(1), road: G(1), crackles: G(1) };
     this.grp.exhaust.connect(this.bus); this.grp.intake.connect(this.bus); this.grp.turbo.connect(this.bus); this.grp.road.connect(hp);
     this.fx = G(1); this.fx.connect(hp);
     // early reflections off glass/roof (short taps, darkened)
@@ -611,23 +626,53 @@ class Engine {
     const rN = noiseSrc(0.9), rLP = mk('lowpass', [170, 0.8]), rPk = c.createBiquadFilter(); rPk.type = 'peaking'; rPk.frequency.value = 90; rPk.Q.value = 1; rPk.gain.value = 4;
     this.roadG = G(0); rN.connect(rLP); rLP.connect(rPk); rPk.connect(this.roadG); this.roadG.connect(this.grp.road);
     const wN = noiseSrc(1.7); this.windBP = mk('bandpass', [900, 0.55]); this.windG = G(0); wN.connect(this.windBP); this.windBP.connect(this.windG); this.windG.connect(this.grp.road);
-    this.crackleBufs = this.makeCrackles(10);
+    // exhaust pops / burble: own chain = tailpipe resonance -> darkening -> soft saturation -> pipe ringing + long tail
+    const P = p.pop;
+    const pipePk = c.createBiquadFilter(); pipePk.type = 'peaking'; pipePk.frequency.value = P.pipe; pipePk.Q.value = 2.2; pipePk.gain.value = 5;
+    const popLP = mk('lowpass', [P.tone * 1.4, 0.6]), sat = c.createWaveShaper(), cv = new Float32Array(1024);
+    for (let i = 0; i < 1024; i++) { const x = i / 1023 * 2 - 1; cv[i] = Math.tanh(1.6 * x) / Math.tanh(1.6); }
+    sat.curve = cv; sat.oversample = '2x';
+    const popIn = G(0.7); this.grp.crackles.connect(popIn); popIn.connect(pipePk); pipePk.connect(popLP); popLP.connect(sat);
+    const popOut = G(0.9); sat.connect(popOut); popOut.connect(hp);
+    const cd = c.createDelay(0.05); cd.delayTime.value = 2 / P.pipe; const cfb = G(0.3), cdLP = mk('lowpass', [1600, 0.5]), cw = G(0.3);
+    sat.connect(cd); cd.connect(cdLP); cdLP.connect(cfb); cfb.connect(cd); cdLP.connect(cw); cw.connect(hp);
+    if (c.createConvolver) {   // dark, longer pipe/body tail (generated IR)
+      const conv = c.createConvolver(), sr = c.sampleRate, n = Math.floor(sr * 0.7), ir = c.createBuffer(2, n, sr), rr = rng(1234);
+      for (let ch = 0; ch < 2; ch++) { const d = ir.getChannelData(ch); let lp = 0, lp2 = 0; for (let i = 0; i < n; i++) { lp += ((rr() * 2 - 1) - lp) * 0.22; lp2 += (lp - lp2) * 0.3; d[i] = lp2 * Math.exp(-i / (sr * 0.13)) * Math.min(1, i / (sr * 0.006)); } }
+      conv.normalize = true; conv.buffer = ir; const wet = G(P.tail); sat.connect(conv); conv.connect(wet); wet.connect(hp);
+    }
+    // overrun burble: darker noise, irregular flutter, cross-fades in on lift
+    const bN = noiseSrc(2.3), bBP = mk('bandpass', [P.thump * 4.5, 0.9]), bLP = mk('lowpass', [P.tone * 0.45, 0.5]);
+    this.burbG = G(0); const flN = noiseSrc(1.1), flLP = mk('lowpass', [28, 0.7]), flD = G(0);
+    bN.connect(bBP); bBP.connect(bLP); bLP.connect(this.burbG); this.burbG.connect(this.grp.crackles);
+    flN.connect(flLP); flLP.connect(flD); flD.connect(this.burbG.gain); this.burbFl = flD;
+    this.pops = this.makePops();
+    this.popT = -9; this.popS = 0;
   }
-  makeCrackles(n) {
-    const c = this.ctx, sr = c.sampleRate, r = rng(99), out = [];
-    for (let j = 0; j < n; j++) {
-      const len = Math.floor(sr * (0.025 + r() * 0.07)), b = c.createBuffer(1, len, sr), d = b.getChannelData(0);
-      const tau = (0.003 + r() * 0.012) * sr, thumpF = 70 + r() * 110, thumpA = r() < 0.5 ? 0.9 * r() : 0, ttau = 0.02 * sr;
-      let pk = 0;
+  makePops() {
+    // each pop = initial crack (sub-ms transient) + filtered noise burst + pitched-down low thump (pipe gas pulse)
+    const c = this.ctx, sr = c.sampleRate, r = rng(99), P = this.p.pop, out = { pop: [], bang: [] };
+    const one = big => {
+      const len = Math.floor(sr * (big ? 0.45 : 0.08 + r() * 0.1)), b = c.createBuffer(1, len, sr), d = b.getChannelData(0);
+      const sharp = big ? 0.85 : r() * r(), nTau = sr * (big ? 0.035 : 0.004 + 0.014 * r()), lpK = 0.06 + 0.45 * sharp;
+      const f1 = P.thump * (0.75 + 0.5 * r()) * (big ? 0.75 : 1), tTau = sr * (big ? 0.085 : 0.018 + 0.03 * r()), tA = big ? 1.3 : 0.55 + 0.7 * r();
+      const cA = big ? 1.3 : 0.15 + 0.9 * sharp, cLen = sr * (0.0006 + 0.0009 * r());
+      let lp = 0, ph = 0, pk = 0;
       for (let i = 0; i < len; i++) {
-        let v = (r() * 2 - 1) * Math.exp(-i / tau) * (i < 4 ? 3 : 1);
-        if (r() < 0.004) v += (r() * 2 - 1) * 0.8 * Math.exp(-i / (tau * 3));   // secondary snaps
-        v += thumpA * Math.sin(2 * Math.PI * thumpF * i / sr) * Math.exp(-i / ttau);
+        const t = i / sr, wn = r() * 2 - 1; lp += (wn - lp) * lpK;
+        let v = lp * Math.exp(-i / nTau) * 1.8;
+        if (i < cLen) v += cA * wn * (1 - i / cLen);
+        ph += 2 * Math.PI * f1 * (1 + 0.9 * Math.exp(-t / 0.01)) / sr;
+        v += tA * Math.sin(ph) * Math.exp(-i / tTau) * Math.min(1, i / (sr * 0.0015));
+        if (big && t > 0.03 && r() < 0.0008) v += (r() * 2 - 1) * 0.6 * Math.exp(-(t - 0.03) / 0.09);
         d[i] = v; pk = Math.max(pk, Math.abs(v));
       }
-      for (let i = 0; i < len; i++) d[i] /= pk || 1;
-      out.push(b);
-    }
+      const fo = Math.floor(sr * 0.006);
+      for (let i = 0; i < len; i++) d[i] = d[i] / (pk || 1) * (i > len - fo ? (len - i) / fo : 1);
+      return b;
+    };
+    for (let j = 0; j < 14; j++) out.pop.push(one(false));
+    for (let j = 0; j < 3; j++) out.bang.push(one(true));
     return out;
   }
   makeBov() {
@@ -659,17 +704,24 @@ class Engine {
     for (const k of Object.keys(this.lv)) if (l && l[k] != null) { this.lv[k] = l[k]; this.grp[k].gain.setTargetAtTime(l[k], tt, 0.05); }
   }
   setVolume(v, t) { this.out.gain.setTargetAtTime(v, t == null ? this.ctx.currentTime : t, 0.05); }
-  crackle(t, s) {
-    const c = this.ctx, src = c.createBufferSource();
-    src.buffer = this.crackleBufs[(Math.random() * this.crackleBufs.length) | 0];
-    src.playbackRate.value = 0.75 + Math.random() * 0.6;
-    const f = this.mk('lowpass', [1400 + Math.random() * 4200, 0.7 + Math.random() * 2.5]);
-    const g = this.G(s * this.p.crackleLevel * this.lv.exhaust);
+  crackle(t, s, big) {
+    const c = this.ctx, P = this.p.pop, src = c.createBufferSource(), set = big ? this.pops.bang : this.pops.pop;
+    src.buffer = set[(Math.random() * set.length) | 0];
+    src.playbackRate.value = big ? 0.9 + Math.random() * 0.15 : 0.8 + Math.random() * 0.4;
+    const f = this.mk('lowpass', [P.tone * (big ? 1.1 : 0.45 + 0.8 * Math.random()), 0.7]);
+    const g = this.G(clamp(s, 0, 1.2) * P.lvl * (big ? 1.25 : 1) * this.lv.exhaust);
     src.connect(f); f.connect(g);
-    if (c.createStereoPanner) { const pn = c.createStereoPanner(); pn.pan.value = (Math.random() - 0.5) * 0.7; g.connect(pn); pn.connect(this.fx); }
-    else g.connect(this.fx);
-    src.start(t);
+    if (c.createStereoPanner) { const pn = c.createStereoPanner(); pn.pan.value = (Math.random() - 0.5) * 0.6; g.connect(pn); pn.connect(this.grp.crackles); }
+    else g.connect(this.grp.crackles);
+    src.start(t); this.popT = t; this.popS = big ? 1 : s;
     src.onended = () => { try { src.disconnect(); f.disconnect(); g.disconnect(); } catch (e) {} };
+  }
+  burst(t, s, n) {   // a short, irregular cluster: first hit strongest, later ones quieter and spaced unevenly
+    let tt = Math.max(t + Math.random() * 0.04, (this.popT || 0) + 0.05);
+    for (let i = 0; i < n; i++) {
+      this.crackle(tt, s * (0.45 + 0.55 * Math.random()) * Math.pow(0.72, i));
+      tt += 0.03 + Math.random() * Math.random() * 0.17;
+    }
   }
   blowOff(t, amt) {
     if (!this.bovBuf) return;
@@ -693,7 +745,9 @@ class Engine {
     else comb = r > 0 ? 0.12 * Math.min(1, r / 600) : 0;
     const alive = r > 1 ? 1 : 0;
     const exv = alive * p.level * comb * (0.24 + 0.76 * load) * (0.5 + 0.5 * rn) * 0.55;
-    set(this.exG.gain, exv, 0.018);
+    set(this.exG.gain, exv, exv < (this.lastExv || 0) ? 0.07 : 0.018); this.lastExv = exv;
+    const bu = alive * (sim.burble || 0) * p.pop.burble * 0.16 * (0.5 + 0.5 * rn);
+    set(this.burbG.gain, bu, 0.06); set(this.burbFl.gain, bu * 0.9, 0.06);
     set(this.lope.frequency, f0, 0.008); set(this.lopeG.gain, exv * (p.lope || 0) * (1.2 - load * 0.6), 0.03);
     set(this.flapPk.gain, p.flap && r > p.flap ? 9 : 0, 0.06);
     set(this.flapPk.frequency, 1500 + rn * 900, 0.05);
@@ -729,21 +783,28 @@ class Engine {
     for (const ev of sim.events) {
       const et = t + Math.random() * (dt || 0.01);
       if (ev.type === 'crackle') this.crackle(et, ev.s);
-      else if (ev.type === 'shiftCrack') { this.crackle(et, 0.9); this.crackle(et + 0.025 + Math.random() * 0.02, 0.6); }
+      else if (ev.type === 'burst') this.burst(et, ev.s, ev.n);
+      else if (ev.type === 'shiftCrack') {
+        if (ev.hard && Math.random() < this.p.pop.bang) this.crackle(et + 0.01, 0.9, true);   // occasional big upshift bang
+        else if (Math.random() < 0.7) { this.crackle(et, 0.45 + 0.25 * Math.random()); if (Math.random() < 0.4) this.crackle(et + 0.03 + Math.random() * 0.04, 0.25); }
+      }
       else if (ev.type === 'bov') this.blowOff(et, ev.amt);
     }
     sim.events.length = 0;
   }
 }
 
+function masterLimiter(ctx) {   // brick-wall-ish safety limiter so pops/bangs never clip
+  const l = ctx.createDynamicsCompressor(); l.threshold.value = -3; l.knee.value = 0; l.ratio.value = 20; l.attack.value = 0.001; l.release.value = 0.12; return l;
+}
 /* ---------- Offline rendering (used for preview/export/tests) ---------- */
 async function renderDemo(presetId, script, secs, sr) {
   sr = sr || 44100;
   const p = PRESETS[presetId], ctx = new OfflineAudioContext(2, Math.ceil(secs * sr), sr);
   const opt = arguments[4] || {};
-  let dest = ctx.destination;
+  const lim = masterLimiter(ctx); lim.connect(ctx.destination); let dest = lim;
   if (opt.eq) { const bands = [[60, 'lowshelf'], [250, 'peaking'], [1000, 'peaking'], [4000, 'peaking'], [12000, 'highshelf']].map(([f, t], i) => { const b = ctx.createBiquadFilter(); b.type = t; b.frequency.value = f; b.Q.value = t === 'peaking' ? 1 : 0.7; b.gain.value = opt.eq[i]; return b; });
-    for (let i = 0; i < 4; i++) bands[i].connect(bands[i + 1]); bands[4].connect(ctx.destination); dest = bands[0]; }
+    for (let i = 0; i < 4; i++) bands[i].connect(bands[i + 1]); bands[4].connect(lim); dest = bands[0]; }
   const sim = new Sim(p), eng = new Engine(ctx, p, dest);
   eng.setVolume(0.8, 0); if (opt.levels) eng.setLevels(opt.levels, 0); eng.start(0);
   if (opt.driveProfile) { sim.driveMode = true; }
@@ -780,12 +841,14 @@ const app = { ctx: null, eng: null, sim: new Sim(PRESETS.gt3), preset: 'gt3', vo
 /* ---------- Settings (persisted) ---------- */
 const EQ_BANDS = [[60, 'lowshelf', '60 Hz'], [250, 'peaking', '250 Hz'], [1000, 'peaking', '1 kHz'], [4000, 'peaking', '4 kHz'], [12000, 'highshelf', '12 kHz']];
 const EQ_PRESETS = { Flat: [0, 0, 0, 0, 0], 'Bass boost': [8, 4, 0, -1, 0], Exhaust: [3, 4, 2, 3, -1], Cabin: [5, 2, -1, -4, -8], Track: [4, 1, 2, 5, 4] };
-const LEVELS = [['master', 'Master'], ['exhaust', 'Exhaust'], ['intake', 'Intake'], ['turbo', 'Turbo'], ['road', 'Road / wind']];
+const LEVELS = [['master', 'Master'], ['exhaust', 'Exhaust'], ['intake', 'Intake'], ['turbo', 'Turbo'], ['crackles', 'Crackles'], ['road', 'Road / wind']];
 const STORE = 'supercar-sound.v1';
-const DEFAULTS = () => ({ car: 'gt3', eq: [0, 0, 0, 0, 0], eqPreset: 'Flat', levels: { master: 0.7, exhaust: 1, intake: 1, turbo: 1, road: 1 }, drive: true });
+const Q = new URLSearchParams(location.search);
+const DEFAULTS = () => ({ car: 'gt3', eq: [0, 0, 0, 0, 0], eqPreset: 'Flat', levels: { master: 0.7, exhaust: 1, intake: 1, turbo: 1, crackles: 0.8, road: 1 }, drive: true });
 function loadSettings() {
   const d = DEFAULTS();
   try { const j = JSON.parse(localStorage.getItem(STORE) || 'null'); if (j) { Object.assign(d, j); d.levels = Object.assign(DEFAULTS().levels, j.levels || {}); } } catch (e) {}
+  if (Q.get('car') && PRESETS[Q.get('car')]) d.car = Q.get('car');
   if (!PRESETS[d.car]) d.car = 'gt3';
   if (!Array.isArray(d.eq) || d.eq.length !== 5) d.eq = [0, 0, 0, 0, 0];
   return d;
@@ -798,8 +861,8 @@ $('driveMode').checked = settings.drive !== false;
 function buildEq(ctx, dest) {
   const bands = EQ_BANDS.map(([f, type], i) => { const b = ctx.createBiquadFilter(); b.type = type; b.frequency.value = f; b.Q.value = type === 'peaking' ? 1.0 : 0.7; b.gain.value = settings.eq[i] || 0; return b; });
   for (let i = 0; i < bands.length - 1; i++) bands[i].connect(bands[i + 1]);
-  bands[bands.length - 1].connect(dest);
-  return { input: bands[0], bands };
+  const lim = masterLimiter(ctx); bands[bands.length - 1].connect(lim); lim.connect(dest);
+  return { input: bands[0], bands, lim };
 }
 function applyEq() { if (app.eqc) app.eqc.bands.forEach((b, i) => b.gain.setTargetAtTime(settings.eq[i], app.ctx.currentTime, 0.03)); }
 function applyLevels() { if (app.eng) { app.eng.setVolume(app.vol); app.eng.setLevels(settings.levels); } }
@@ -830,6 +893,7 @@ function setPreset(k) {
 }
 
 // settings sheet
+function fill(inp) { inp.style.setProperty('--fill', ((inp.value - inp.min) / (inp.max - inp.min) * 100).toFixed(1) + '%'); }
 function buildSettings() {
   const ep = $('eqPresets'); ep.innerHTML = '';
   for (const name of Object.keys(EQ_PRESETS)) {
@@ -842,8 +906,8 @@ function buildSettings() {
     const row = document.createElement('div'); row.className = 'rowc';
     row.innerHTML = '<label></label><input type="range" min="-12" max="12" step="0.5"><output></output>';
     const inp = row.querySelector('input'), out = row.querySelector('output'); row.querySelector('label').textContent = label;
-    inp.value = settings.eq[i]; inp.setAttribute('aria-label', 'EQ ' + label); out.textContent = (settings.eq[i] > 0 ? '+' : '') + settings.eq[i] + ' dB';
-    inp.addEventListener('input', () => { settings.eq[i] = Number(inp.value); settings.eqPreset = 'Custom'; out.textContent = (settings.eq[i] > 0 ? '+' : '') + settings.eq[i] + ' dB'; applyEq(); saveSettings();
+    inp.value = settings.eq[i]; fill(inp); inp.setAttribute('aria-label', 'EQ ' + label); out.textContent = (settings.eq[i] > 0 ? '+' : '') + settings.eq[i] + ' dB';
+    inp.addEventListener('input', () => { fill(inp); settings.eq[i] = Number(inp.value); settings.eqPreset = 'Custom'; out.textContent = (settings.eq[i] > 0 ? '+' : '') + settings.eq[i] + ' dB'; applyEq(); saveSettings();
       ep.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', 'false')); });
     bd.appendChild(row);
   });
@@ -853,15 +917,15 @@ function buildSettings() {
     row.innerHTML = '<label></label><input type="range" min="0" max="150" step="1"><output></output>';
     const inp = row.querySelector('input'), out = row.querySelector('output'); row.querySelector('label').textContent = label;
     const max = key === 'master' ? 100 : 150; inp.max = max; inp.dataset.level = key;
-    inp.value = Math.round(settings.levels[key] * 100); out.textContent = inp.value + '%';
-    inp.addEventListener('input', () => { settings.levels[key] = inp.value / 100; out.textContent = inp.value + '%';
-      if (key === 'master') { app.vol = settings.levels.master; $('vol').value = inp.value; $('volOut').textContent = inp.value + '%'; }
+    inp.value = Math.round(settings.levels[key] * 100); out.textContent = inp.value + '%'; fill(inp);
+    inp.addEventListener('input', () => { settings.levels[key] = inp.value / 100; out.textContent = inp.value + '%'; fill(inp);
+      if (key === 'master') { app.vol = settings.levels.master; $('vol').value = inp.value; $('volOut').textContent = inp.value + '%'; fill($('vol')); }
       applyLevels(); saveSettings(); });
     lv.appendChild(row);
   }
 }
 buildSettings();
-$('vol').value = Math.round(app.vol * 100); $('volOut').textContent = $('vol').value + '%';
+$('vol').value = Math.round(app.vol * 100); $('volOut').textContent = $('vol').value + '%'; fill($('vol'));
 $('openEq').addEventListener('click', () => { buildSettings(); $('eqSheet').classList.remove('hidden'); });
 $('closeEq').addEventListener('click', () => $('eqSheet').classList.add('hidden'));
 $('eqSheet').addEventListener('click', e => { if (e.target.id === 'eqSheet') $('eqSheet').classList.add('hidden'); });
@@ -883,7 +947,7 @@ async function unlock() {
 }
 
 /* ---------- GPS speed source (Follow-speed drive mode) ---------- */
-const gps = { id: null, status: 'off', kmh: null, acc: 0, fixT: 0, last: null, sim: /[?&]sim=1\b/.test(location.search), simTimer: null };
+const gps = { id: null, status: 'off', kmh: null, acc: 0, fixT: 0, last: null, sim: /[?&]sim=[12]\b/.test(location.search), short: /[?&]sim=2\b/.test(location.search), simTimer: null };
 const GPS_TXT = { off: 'GPS off - idle', waiting: 'Waiting for GPS…', denied: 'Location denied - idle', unavailable: 'GPS unavailable - idle',
   unsupported: 'Location not supported', insecure: 'Location needs HTTPS', timeout: 'GPS timeout – retrying', lost: 'GPS signal lost - idle' };
 function haversine(a, b) {
@@ -970,8 +1034,10 @@ function gpsState() {
 function gpsSpeedNow() { const g = gpsState(); return g ? g.v : null; }
 // ?sim=1 – debug drive: fake 1 Hz fixes for 0 → 120 → 0 km/h (speed omitted on every other fix to exercise the fallback)
 function simProfile(t) {
-  const k = [[0, 0], [3, 0], [13, 100], [23, 120], [33, 120], [41, 40], [48, 70], [58, 0], [64, 0]];
-  t = t % 64;
+  const k = gps.short   // ?sim=2: ~25 s demo – launch, lift, hard brake, re-accelerate, stop
+    ? [[0, 0], [2, 0], [9, 105], [10.5, 102], [14, 40], [18, 92], [19, 92], [24, 0], [28, 0]]
+    : [[0, 0], [3, 0], [13, 100], [23, 120], [33, 120], [41, 40], [48, 70], [58, 0], [64, 0]];
+  t = t % k[k.length - 1][0];
   for (let i = 1; i < k.length; i++) if (t <= k[i][0]) { const [t0, v0] = k[i - 1], [t1, v1] = k[i]; return v0 + (v1 - v0) * (t - t0) / (t1 - t0); }
   return 0;
 }
@@ -1008,108 +1074,132 @@ function tick() {
   if (app.eng) app.eng.apply(sim, app.ctx.currentTime + 0.025, 0.015);
 }
 
-document.querySelectorAll('[data-cmd]').forEach(b => b.addEventListener('click', () => {
-  if (!app.ctx) unlock();
-  if (app.ctx && app.ctx.state !== 'running') app.ctx.resume();
-  app.sim.command(b.dataset.cmd);
-}));
+// full screen (gives the cluster the whole display where the browser allows it)
+(() => { const fb = $('fsBtn'), de = document.documentElement, req = de.requestFullscreen || de.webkitRequestFullscreen;
+  if (!req) { fb.classList.add('hidden'); return; }
+  fb.addEventListener('click', () => { const fe = document.fullscreenElement || document.webkitFullscreenElement;
+    try { if (fe) (document.exitFullscreen || document.webkitExitFullscreen).call(document); else { const r = req.call(de); if (r && r.catch) r.catch(() => {}); } } catch (e) {} }); })();
 
-$('vol').addEventListener('input', e => { app.vol = e.target.value / 100; settings.levels.master = app.vol; $('volOut').textContent = e.target.value + '%'; applyLevels(); saveSettings(); });
+$('vol').addEventListener('input', e => { fill(e.target); app.vol = e.target.value / 100; settings.levels.master = app.vol; $('volOut').textContent = e.target.value + '%'; applyLevels(); saveSettings(); });
 
 
-/* ---------- Premium instrument cluster ---------- */
+/* ---------- Instrument cluster (digital, premium) ---------- */
 const cv = $('tach'), g2 = cv.getContext('2d');
-let shownRpm = 0, shownSpd = 0, shownAux = 0;
+let shownRpm = 0, shownSpd = 0, shownAux = 0, shownLoad = 0, popGlow = 0, lastDraw = performance.now();
 const FONT = 'system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
-function bezel(g, cx, cy, R) {
-  const gr = g.createLinearGradient(cx - R, cy - R, cx + R, cy + R);
-  gr.addColorStop(0, '#9a9aa3'); gr.addColorStop(0.25, '#2a2a30'); gr.addColorStop(0.5, '#c8c8d0'); gr.addColorStop(0.75, '#2a2a30'); gr.addColorStop(1, '#8a8a93');
-  g.beginPath(); g.arc(cx, cy, R * 1.1, 0, Math.PI * 2); g.fillStyle = gr; g.fill();
-  g.beginPath(); g.arc(cx, cy, R * 1.06, 0, Math.PI * 2); g.fillStyle = '#050506'; g.fill();
-  const face = g.createRadialGradient(cx, cy - R * 0.3, R * 0.1, cx, cy, R * 1.05);
-  face.addColorStop(0, '#1c1c22'); face.addColorStop(1, '#060607');
-  g.beginPath(); g.arc(cx, cy, R * 1.03, 0, Math.PI * 2); g.fillStyle = face; g.fill();
+function arc(g, cx, cy, r, a0, a1, lw, col, glow) {
+  if (a1 <= a0 + 1e-4) return;
+  g.save(); if (glow) { g.shadowColor = glow; g.shadowBlur = lw * 1.4; }
+  g.beginPath(); g.arc(cx, cy, r, a0, a1); g.lineWidth = lw; g.lineCap = 'butt'; g.strokeStyle = col; g.stroke(); g.restore();
 }
-function needle(g, cx, cy, R, a, len) {
-  g.save(); g.shadowColor = '#ff2a3d'; g.shadowBlur = R * 0.08;
-  g.beginPath(); g.moveTo(cx - Math.cos(a) * R * 0.14, cy - Math.sin(a) * R * 0.14); g.lineTo(cx + Math.cos(a) * R * len, cy + Math.sin(a) * R * len);
-  g.lineWidth = R * 0.034; g.lineCap = 'round'; g.strokeStyle = '#ff2a3d'; g.stroke(); g.restore();
-  const cap = g.createRadialGradient(cx - R * 0.02, cy - R * 0.02, 1, cx, cy, R * 0.09);
-  cap.addColorStop(0, '#f4f4f6'); cap.addColorStop(1, '#55555c');
-  g.beginPath(); g.arc(cx, cy, R * 0.085, 0, Math.PI * 2); g.fillStyle = cap; g.fill();
+function label(g, txt, x, y, size, col, weight, align) {
+  g.font = (weight || 600) + ' ' + Math.round(size) + 'px ' + FONT; g.fillStyle = col; g.textAlign = align || 'center'; g.fillText(txt, x, y);
 }
-function dial(g, cx, cy, R, max, step, minorStep, label, redFrom, fmt, value, a0, sweep) {
-  bezel(g, cx, cy, R);
-  const ang = v => a0 + sweep * clamp(v / max, 0, 1);
-  if (redFrom != null) { g.beginPath(); g.arc(cx, cy, R * 0.9, ang(redFrom), ang(max)); g.lineWidth = R * 0.08; g.strokeStyle = '#c10019'; g.stroke(); }
-  g.textAlign = 'center'; g.textBaseline = 'middle';
-  for (let v = 0; v <= max + 1e-6; v += minorStep) {
-    const a = ang(v), major = Math.abs(v / step - Math.round(v / step)) < 1e-6, r1 = R * (major ? 0.78 : 0.85), r2 = R * 0.95;
-    g.beginPath(); g.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1); g.lineTo(cx + Math.cos(a) * r2, cy + Math.sin(a) * r2);
-    g.lineWidth = major ? R * 0.026 : R * 0.011; g.strokeStyle = redFrom != null && v >= redFrom ? '#ff4455' : '#e6e6ea'; g.stroke();
-    if (major) { g.fillStyle = redFrom != null && v >= redFrom ? '#ff4455' : '#f2f2f4'; g.font = '600 ' + Math.round(R * 0.15) + 'px ' + FONT;
-      g.fillText(fmt(v), cx + Math.cos(a) * R * 0.62, cy + Math.sin(a) * R * 0.62); }
-  }
-  g.fillStyle = '#8c8c96'; g.font = '500 ' + Math.round(R * 0.085) + 'px ' + FONT; g.fillText(label, cx, cy - R * 0.34);
-  return ang(value);
+function bar(g, x, y, w, h, frac, col, glow) {
+  g.fillStyle = '#1b1b21'; g.beginPath(); g.roundRect ? g.roundRect(x, y, w, h, h / 2) : g.rect(x, y, w, h); g.fill();
+  if (frac > 0.005) { g.save(); if (glow) { g.shadowColor = col; g.shadowBlur = h * 1.5; } g.fillStyle = col; g.beginPath(); g.roundRect ? g.roundRect(x, y, Math.max(h, w * frac), h, h / 2) : g.rect(x, y, w * frac, h); g.fill(); g.restore(); }
 }
 function draw() {
+  const now = performance.now(), fdt = Math.min(0.1, (now - lastDraw) / 1000); lastDraw = now;
   const dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight;
   if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
   const g = g2; g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, w, h);
-  const sim = app.sim, p = PRESETS[app.preset];
-  shownRpm += (sim.rpm - shownRpm) * 0.5; shownSpd += (sim.speed - shownSpd) * 0.2;
-  const aux = p.turbo ? sim.boost : clamp((sim.oil - 40) / 100, 0, 1); shownAux += (aux - shownAux) * 0.2;
+  const sim = app.sim, p = PRESETS[app.preset], k = tau => 1 - Math.exp(-fdt / tau);
+  shownRpm += (sim.rpm - shownRpm) * k(0.035); shownSpd += (sim.speed - shownSpd) * k(0.15); shownLoad += ((sim.running ? sim.load : 0) - shownLoad) * k(0.08);
+  const aux = p.turbo ? sim.boost : clamp((sim.oil - 40) / 100, 0, 1); shownAux += (aux - shownAux) * k(0.15);
+  if (app.eng && app.ctx) { const age = app.ctx.currentTime - (app.eng.popT || -9); if (age > -0.05 && age < 0.06) popGlow = Math.max(popGlow, clamp(app.eng.popS || 0.5, 0.3, 1)); }
+  popGlow *= Math.exp(-fdt / 0.18);
   const maxR = Math.ceil((p.limiter + 600) / 1000) * 1000;
-  const R = Math.min(h * 0.42, w * 0.2), cx = w / 2, cy = h * 0.53;
-  const sR = R * 0.66, sx = cx - R * 2.05, ax = cx + R * 2.05, sy = cy + R * 0.12;
-  // speedometer (left)
-  const sa = dial(g, sx, sy, sR, 320, 40, 20, 'km/h', null, v => String(v), shownSpd, Math.PI * 0.75, Math.PI * 1.5);
-  g.fillStyle = '#fff'; g.font = '700 ' + Math.round(sR * 0.26) + 'px ' + FONT; g.fillText(String(Math.round(shownSpd)), sx, sy + sR * 0.45);
-  g.font = '700 ' + Math.round(sR * 0.1) + 'px ' + FONT; g.fillStyle = sim.drive ? '#7ee0a5' : '#6d6d78';
-  g.fillText(sim.drive ? 'GPS' : sim.driveMode ? 'NO GPS' : 'SIM', sx, sy + sR * 0.68);
-  needle(g, sx, sy, sR, sa, 0.9);
-  // right gauge: boost (turbo) or oil temperature
-  const aa = p.turbo
-    ? dial(g, ax, sy, sR, 1, 0.25, 0.125, 'BOOST', null, v => (v * 1.6).toFixed(1).replace('.0', ''), shownAux, Math.PI * 0.75, Math.PI * 1.5)
-    : dial(g, ax, sy, sR, 1, 0.25, 0.125, 'OIL °C', 0.85, v => String(Math.round(40 + v * 100)), shownAux, Math.PI * 0.75, Math.PI * 1.5);
-  g.fillStyle = '#fff'; g.font = '700 ' + Math.round(sR * 0.22) + 'px ' + FONT;
-  g.fillText(p.turbo ? (shownAux * 1.6).toFixed(2) + ' bar' : Math.round(sim.oil) + '°', ax, sy + sR * 0.45);
-  needle(g, ax, sy, sR, aa, 0.9);
-  // tachometer (center)
-  const ta = dial(g, cx, cy, R, maxR, 1000, 250, 'x1000 rpm', p.redline, v => String(v / 1000), shownRpm, Math.PI * 0.75, Math.PI * 1.5);
-  g.beginPath(); g.arc(cx, cy, R * 1.0, Math.PI * 0.75, ta); g.lineWidth = R * 0.03;
-  g.strokeStyle = shownRpm >= p.redline - 300 ? '#ff2a3d' : '#ffffffcc'; g.stroke();
-  g.fillStyle = '#fff'; g.font = '800 ' + Math.round(R * 0.19) + 'px ' + FONT; g.fillText(String(Math.round(shownRpm / 10) * 10), cx, cy + R * 0.38);
-  const gear = sim.shift ? sim.shift.to : sim.gear;
-  g.font = '800 ' + Math.round(R * 0.24) + 'px ' + FONT; g.fillStyle = gear ? '#c9a45c' : '#7d7d88';
-  g.fillText(gear ? (sim.drive ? 'D' : '') + gear : 'N', cx, cy + R * 0.67);
-  needle(g, cx, cy, R, ta, 0.92);
-  // shift lights
-  const n = 9, lw = R * 0.15, gap = R * 0.05, tw = n * lw + (n - 1) * gap, ly = cy - R * 1.22;
-  const frac = clamp((shownRpm - (p.shiftRpm - 2200)) / 2200, 0, 1), lit = Math.round(frac * n), flash = sim.fuelCut || (frac >= 1 && (Date.now() / 90 | 0) % 2);
-  for (let i = 0; i < n; i++) {
-    const on = flash ? true : i < lit, col = flash ? '#ff2a3d' : i < 3 ? '#2fdc6f' : i < 6 ? '#ffc93c' : '#ff2a3d';
-    g.beginPath(); g.roundRect ? g.roundRect(cx - tw / 2 + i * (lw + gap), ly, lw, R * 0.07, R * 0.03) : g.rect(cx - tw / 2 + i * (lw + gap), ly, lw, R * 0.07);
-    g.fillStyle = on ? col : '#1e1e24'; g.save(); if (on) { g.shadowColor = col; g.shadowBlur = R * 0.1; } g.fill(); g.restore();
+  const R = Math.min(h * 0.43, w * 0.19), cx = w / 2, cy = h * 0.53, A0 = Math.PI * 0.75, SW = Math.PI * 1.5, ang = v => A0 + SW * clamp(v / maxR, 0, 1);
+  // tach face glow
+  const face = g.createRadialGradient(cx, cy, R * 0.2, cx, cy, R * 1.25);
+  face.addColorStop(0, '#16161c'); face.addColorStop(0.75, '#0d0d10'); face.addColorStop(1, '#0a0a0c00');
+  g.fillStyle = face; g.beginPath(); g.arc(cx, cy, R * 1.25, 0, Math.PI * 2); g.fill();
+  // track + redline zone
+  const lw = R * 0.085;
+  arc(g, cx, cy, R, A0, A0 + SW, lw, '#1a1a20');
+  arc(g, cx, cy, R, ang(p.redline), A0 + SW, lw, '#4a0710');
+  // ticks + numbers
+  for (let v = 0; v <= maxR + 1; v += 250) {
+    const a = ang(v), major = v % 1000 === 0, half = v % 500 === 0, r1 = R * (major ? 0.8 : half ? 0.84 : 0.865), r2 = R * 0.9, red = v >= p.redline;
+    g.beginPath(); g.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1); g.lineTo(cx + Math.cos(a) * r2, cy + Math.sin(a) * r2);
+    g.lineWidth = major ? R * 0.018 : R * 0.008; g.strokeStyle = red ? '#ff3a4c' : major ? '#e8e8ec' : '#6c6c76'; g.stroke();
+    if (major) { g.textBaseline = 'middle'; label(g, String(v / 1000), cx + Math.cos(a) * R * 0.69, cy + Math.sin(a) * R * 0.69, R * 0.105, red ? '#ff3a4c' : '#d9d9de', 700); }
   }
-  // lower info strip
-  g.fillStyle = '#8c8c96'; g.font = '600 ' + Math.round(clamp(R * 0.075, 11, 18)) + 'px ' + FONT; g.textAlign = 'right';
-  g.fillText(p.name.replace('Inspired by ', '').toUpperCase() + '  ·  ' + (sim.fuelCut ? 'LIMITER' : sim.shift ? (sim.shift.dir > 0 ? 'UPSHIFT' : 'DOWNSHIFT') : sim.overrun > 0 && sim.thr < 0.2 ? 'OVERRUN' : sim.running ? 'READY' : sim.cranking ? 'CRANKING' : 'OFF'), w - 18, 22); g.textAlign = 'center';
+  // active arc (white -> amber -> red), with glow
+  const ra = ang(shownRpm), aWarn = ang(p.redline - 1500), aRed = ang(p.redline);
+  arc(g, cx, cy, R, A0, Math.min(ra, aWarn), lw, '#f4f4f6', '#ffffff55');
+  if (ra > aWarn) arc(g, cx, cy, R, aWarn, Math.min(ra, aRed), lw, '#ffb43a', '#ffb43a88');
+  if (ra > aRed) arc(g, cx, cy, R, aRed, ra, lw, '#ff2d42', '#ff2d42');
+  // pointer tip
+  g.save(); g.shadowColor = '#ff2d42'; g.shadowBlur = R * 0.06; g.beginPath();
+  g.moveTo(cx + Math.cos(ra) * R * 0.76, cy + Math.sin(ra) * R * 0.76); g.lineTo(cx + Math.cos(ra) * R * 1.07, cy + Math.sin(ra) * R * 1.07);
+  g.lineWidth = R * 0.022; g.lineCap = 'round'; g.strokeStyle = '#ff2d42'; g.stroke(); g.restore();
+  // centre: speed (primary), rpm, gear
+  g.textBaseline = 'alphabetic';
+  label(g, String(Math.round(shownSpd)), cx, cy + R * 0.12, R * 0.5, '#ffffff', 800);
+  label(g, 'km/h', cx, cy + R * 0.27, R * 0.08, '#8d8d98', 600);
+  g.textBaseline = 'middle';
+  label(g, (Math.round(shownRpm / 10) * 10).toLocaleString('en-US') + ' RPM', cx, cy - R * 0.42, R * 0.085, shownRpm >= p.redline - 300 ? '#ff4a5a' : '#bdbdc6', 700);
+  const gear = sim.shift ? sim.shift.to : sim.gear, gtxt = gear ? (sim.drive ? 'D' : '') + gear : (sim.running ? 'N' : '–');
+  const gw = R * 0.42, gh = R * 0.2, gy = cy + R * 0.58;
+  g.fillStyle = '#17171c'; g.strokeStyle = gear ? '#d8b36a66' : '#2a2a31'; g.lineWidth = 2; g.beginPath(); g.roundRect ? g.roundRect(cx - gw / 2, gy - gh / 2, gw, gh, gh / 2) : g.rect(cx - gw / 2, gy - gh / 2, gw, gh); g.fill(); g.stroke();
+  label(g, gtxt, cx, gy + 1, gh * 0.72, gear ? '#d8b36a' : '#777782', 800);
+  // shift lights
+  const n = 11, sl = R * 0.11, sgap = R * 0.035, tw = n * sl + (n - 1) * sgap, ly = Math.max(10, cy - R * 1.2 - R * 0.035);
+  const frac = clamp((shownRpm - (p.shiftRpm - 2400)) / 2400, 0, 1), lit = Math.round(frac * n), flash = sim.fuelCut || (frac >= 1 && (Date.now() / 90 | 0) % 2);
+  for (let i = 0; i < n; i++) {
+    const on = flash ? true : i < lit, col = flash ? '#ff2d42' : i < 4 ? '#35d07f' : i < 8 ? '#ffc23c' : '#ff2d42';
+    g.beginPath(); g.roundRect ? g.roundRect(cx - tw / 2 + i * (sl + sgap), ly, sl, R * 0.05, R * 0.025) : g.rect(cx - tw / 2 + i * (sl + sgap), ly, sl, R * 0.05);
+    g.fillStyle = on ? col : '#18181d'; g.save(); if (on) { g.shadowColor = col; g.shadowBlur = R * 0.08; } g.fill(); g.restore();
+  }
+  // left panel: car + mode + load
+  const lx = Math.max(28, cx - R * 1.25 - Math.min(w * 0.26, R * 1.7)), lW = cx - R * 1.3 - lx;
+  if (lW > 140) {
+    const fs = clamp(R * 0.13, 18, 40);
+    g.textBaseline = 'alphabetic';
+    label(g, 'INSPIRED BY', lx, cy - R * 0.48, fs * 0.42, '#7c7c87', 700, 'left');
+    const nm = p.name.replace(/^Inspired by /, ''); label(g, nm.charAt(0).toUpperCase() + nm.slice(1), lx, cy - R * 0.3, fs, '#ffffff', 800, 'left');
+    label(g, p.spec, lx, cy - R * 0.16, fs * 0.5, '#b8b8c1', 600, 'left');
+    const modeTxt = sim.drive ? 'GPS DRIVE' : sim.running ? (sim.driveMode ? 'IDLE · WAITING FOR GPS' : 'IDLE') : 'ENGINE OFF';
+    label(g, modeTxt, lx, cy + R * 0.06, fs * 0.45, sim.drive ? '#7fe8ad' : '#8d8d98', 800, 'left');
+    label(g, 'THROTTLE', lx, cy + R * 0.3, fs * 0.38, '#7c7c87', 700, 'left');
+    bar(g, lx, cy + R * 0.36, Math.min(lW, R * 1.2), R * 0.045, shownLoad, shownLoad > 0.8 ? '#ff2d42' : '#f4f4f6', shownLoad > 0.8);
+    label(g, 'REDLINE ' + p.redline.toLocaleString('en-US'), lx, cy + R * 0.62, fs * 0.38, '#7c7c87', 700, 'left');
+  }
+  // right panel: boost / oil + overrun indicator
+  const rx = cx + R * 1.3, rW = Math.min(w - 28 - rx, R * 1.7);
+  if (rW > 140) {
+    const fs = clamp(R * 0.13, 18, 40), ax0 = rx + rW * 0.05;
+    g.textBaseline = 'alphabetic';
+    label(g, p.turbo ? 'BOOST' : 'OIL TEMP', ax0, cy - R * 0.48, fs * 0.42, '#7c7c87', 700, 'left');
+    label(g, p.turbo ? (shownAux * 1.6).toFixed(2) + ' bar' : Math.round(sim.oil) + ' °C', ax0, cy - R * 0.28, fs * 1.05, '#ffffff', 800, 'left');
+    bar(g, ax0, cy - R * 0.18, Math.min(rW * 0.9, R * 1.2), R * 0.045, shownAux, p.turbo ? '#5ec8ff' : (sim.oil > 110 ? '#ff2d42' : '#d8b36a'), p.turbo && shownAux > 0.5);
+    label(g, 'EXHAUST', ax0, cy + R * 0.12, fs * 0.42, '#7c7c87', 700, 'left');
+    const ovr = sim.overrun > 0 && sim.thr < 0.2 && sim.running;
+    const stt = sim.fuelCut ? 'LIMITER' : sim.shift ? (sim.shift.dir > 0 ? 'UPSHIFT' : 'DOWNSHIFT') : ovr ? 'OVERRUN' : sim.running ? (shownLoad > 0.6 ? 'FULL LOAD' : 'CRUISE') : '—';
+    label(g, stt, ax0, cy + R * 0.3, fs * 0.8, ovr || sim.fuelCut ? '#ffb43a' : '#e8e8ec', 800, 'left');
+    // pop flash: little glowing dot that flares on each exhaust pop
+    g.save(); const pr = R * 0.05, px = ax0 + pr, py = cy + R * 0.48;
+    g.shadowColor = '#ff8a2a'; g.shadowBlur = R * 0.25 * popGlow; g.beginPath(); g.arc(px, py, pr * (0.7 + 0.5 * popGlow), 0, Math.PI * 2);
+    g.fillStyle = popGlow > 0.05 ? `rgba(255,${Math.round(120 + 100 * popGlow)},40,${0.35 + 0.65 * popGlow})` : '#22222a'; g.fill(); g.restore();
+    label(g, 'POPS', px + pr * 2.2, py + fs * 0.14, fs * 0.4, popGlow > 0.05 ? '#ffb43a' : '#6c6c76', 800, 'left');
+  }
+  g.textAlign = 'center'; g.textBaseline = 'middle';
   const st = sim.statusKey, el = $('status');
   el.className = 'status' + (st === 'on' ? ' on' : st === 'crank' ? ' crank' : '');
-  $('statusTxt').textContent = { on: 'Engine running', crank: 'Cranking…', stopping: 'Shutting down…', off: 'Engine off' }[st] + (sim.drive ? ' · following GPS speed' : '') + (app.ctx && app.ctx.state !== 'running' ? ' · audio paused' : '');
+  const stx = { on: 'Engine running', crank: 'Cranking…', stopping: 'Shutting down…', off: 'Engine off' }[st] + (sim.drive ? ' · following GPS speed' : '') + (app.ctx && app.ctx.state !== 'running' ? ' · audio paused' : '');
+  if ($('statusTxt').textContent !== stx) $('statusTxt').textContent = stx;
   const on = sim.running || sim.cranking, sb = $('startBtn');
   if (sb.getAttribute('aria-pressed') !== String(on)) { sb.setAttribute('aria-pressed', String(on)); $('ssMain').textContent = on ? 'STOP' : 'START'; $('ssBot').textContent = on ? 'START' : 'STOP'; }
   const ge = $('gpsStatus'), gt = !$('driveMode').checked ? 'GPS off - idle' : gps.status === 'ok' ? (gps.sim ? 'Simulated drive · ' : 'GPS · ') + Math.round(gps.kmh) + ' km/h' : GPS_TXT[gps.status];
   if (ge.textContent !== gt) ge.textContent = gt;
   ge.className = 'gps' + (gps.status === 'ok' && $('driveMode').checked ? ' ok' : '');
-  document.querySelectorAll('[data-cmd]').forEach(b => b.classList.toggle('active', !!(sim.prog && sim.prog.name === b.dataset.cmd)));
   requestAnimationFrame(draw);
 }
 requestAnimationFrame(draw);
 
-window.Boxer6 = { PRESETS, Sim, Engine, renderDemo, encodeWav, app, gps, est, imu, gpsState, simProfile, settings, EQ_PRESETS };
+window.Boxer6 = { PRESETS, Sim, Engine, renderDemo, encodeWav, app, gps, est, imu, gpsState, simProfile, settings, EQ_PRESETS, POP };
 
 /*PWA-START*/
 if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {

@@ -15,7 +15,8 @@ It has no sound files, external libraries, CDNs or web fonts. Everything is gene
 | `build_standalone.py` | Rebuilds the standalone file from `index.html` |
 | `preview.png`, `preview-drive.png`, `preview-eq.png` | 1920x1200 screenshots (GPS off, Follow-speed mode, Sound settings panel) |
 | `tesla-mockup.png` | Illustrative mockup of the app inside a Tesla-style browser (not a real Tesla screenshot) |
-| `preview.wav` | Offline-rendered demo (GT3, Turbo S, classic) |
+| `preview.wav` | Older offline-rendered demo (GT3, Turbo S, classic) |
+| `demo-turbo-s.mp4` | 26 s screen recording of `?sim=2` (Turbo S) with engine audio rendered from the same drive |
 
 ## Loading it in a Tesla
 The Tesla browser **cannot open local files or HTML from a USB drive**, so the folder must be hosted on an HTTPS URL.
@@ -54,12 +55,12 @@ The Tesla browser **cannot open local files or HTML from a USB drive**, so the f
   | Mazda RX-7 | twin-rotor Wankel, turbo | 8,000 | 5 | buzzy "brap", pops |
   | Lexus LFA | NA 72° V10 | 9,000 | 6 | F1-style shriek, fastest revving |
   | Mercedes-AMG GT | biturbo crossplane V8 | 7,000 | 7 | hot-vee crackle and bang |
-- **Sound settings** (top right): 5-band equalizer (60 Hz, 250 Hz, 1 kHz, 4 kHz, 12 kHz, ±12 dB) with presets Flat, Bass boost, Exhaust, Cabin and Track; level sliders for Master, Exhaust, Intake, Turbo and Road/wind (0–150%). The selected car, EQ, levels and drive mode are saved in the browser (`localStorage`).
+- **Sound settings** (top right): 5-band equalizer (60 Hz, 250 Hz, 1 kHz, 4 kHz, 12 kHz, ±12 dB) with presets Flat, Bass boost, Exhaust, Cabin and Track; level sliders for Master, Exhaust, Intake, Turbo, Crackles and Road/wind (0–150%). The selected car, EQ, levels and drive mode are saved in the browser (`localStorage`).
 - **ENGINE START / STOP**: big round button – starter crank, catch and settle to idle; press again for shutdown.
 - **Drive mode: Follow speed (GPS)** (on by default): the app reads your speed with `navigator.geolocation.watchPosition` (high accuracy; uses `coords.speed`, or computes speed from successive positions when it's missing), smooths it, and maps it to rpm through a simulated automatic/dual-clutch gearbox with per-car ratios and final drive. Hard acceleration upshifts around 6,000–6,500 rpm, gentle cruising shifts early, braking downshifts with rev-match blips that get sharper the harder you brake, adds overrun pops and a low engine-braking drone, and stopping returns to idle. Accelerating adds load (more intake/exhaust and boost); coasting gives overrun crackle. The speedometer shows the GPS speed and the tach shows the gear. Status shows "Waiting for GPS…", "Location denied - idle", "GPS unavailable - idle", "GPS signal lost - idle" or "GPS off - idle"; without GPS the engine idles and the action buttons still work.
-- **Debug drive**: add `?sim=1` to the URL to fake a 0 → 120 → 0 km/h drive.
-- **Buttons**: Idle, Rev blip, Rev to redline (into the limiter), Launch & upshifts, Downshift with blip, Overrun pops.
-- **Cluster**: center tachometer with shift lights, speedometer, and a boost gauge (Turbo) or oil temperature (other presets).
+- **Debug / demo drive**: add `?sim=1` to the URL for a 64 s 0 → 120 → 0 km/h drive, or `?sim=2` for a 28 s demo (launch, lift, hard brake, re-accelerate, stop). `?car=amg` (any card id) picks the car.
+- **Full screen** button (top right) hides browser chrome where the browser allows it.
+- **Cluster**: digital arc tachometer with shift lights, large speed readout and gear, car/throttle panel on the left, boost or oil temperature plus exhaust state (cruise / overrun / limiter) and a pop indicator on the right.
 
 ## How the sound is made
 - The base oscillator is one full engine cycle (rpm/120) with a harmonic stack where harmonic N is the firing frequency (N = cylinders; 4 for the 2-rotor rotary). Half-order (crossplane/uneven header), crank-order and per-bank harmonics give each engine its character, plus a per-cycle amplitude lope.
@@ -67,7 +68,7 @@ The Tesla browser **cannot open local files or HTML from a USB drive**, so the f
 - Exhaust: soft-clip waveshaper and resonant bandpass filters (one tracks rpm), split into left/right "tailpipes" with a slight path difference, plus a short synthetic cabin reflection (generated impulse response).
 - Intake: filtered noise that rises with throttle, modulated by the firing pulses, plus a high-harmonic induction howl with a resonance-flap boost above ~5,600 rpm on the GT3 preset.
 - Turbo: whistle that rises with boost, air hiss, and a fluttering blow-off on lift.
-- Pops: short random noise bursts on lift-off, on upshifts and on the limiter. Subtle gearbox whine in gear.
+- Overrun pops & burble: on lift-off or braking the combustion tone fades out smoothly while a low, irregular burble fades in; after a short delay, sparse clusters of 1–4 pops follow, each first hit strongest and the rest quieter and unevenly spaced, with a breather between clusters. Each pop combines a sub-millisecond crack, a filtered noise burst and a pitched-down low thump, then runs through a per-car tailpipe resonance, soft saturation, pipe ringing and a dark reverb tail. Hard upshifts on sporty cars occasionally give a bigger bang. A master limiter prevents clipping.
 - Physics: rpm-dependent torque, friction, gear-dependent inertia, rev limiter, idle control, turbo lag.
 
 Keep the volume reasonable, never mask the car's own warning sounds, and be considerate of people around you.

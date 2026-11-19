@@ -1,5 +1,5 @@
 /* Service worker: caches the whole app for offline use after the first online load. */
-const CACHE = 'supercar-v6-cars';
+const CACHE = 'supercar-v7-burble';
 const ASSETS = ['./', './index.html', './manifest.json', './icon.svg', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
